@@ -1,1 +1,48 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>BMHS TSA</title><link>https://bmhstsa.com/</link><description>Recent content on BMHS TSA</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Tue, 30 Mar 2021 14:14:19 -0600</lastBuildDate><atom:link href="https://bmhstsa.com/index.xml" rel="self" type="application/rss+xml"/></channel></rss>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>BMHS TSA</title><link>https://bmhstsa.com/</link><description>Recent content on BMHS TSA</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Tue, 30 Mar 2021 22:38:13 -0600</lastBuildDate><atom:link href="https://bmhstsa.com/index.xml" rel="self" type="application/rss+xml"/><item><title>Get Ahead</title><link>https://bmhstsa.com/post/get-ahead/</link><pubDate>Tue, 30 Mar 2021 22:38:13 -0600</pubDate><guid>https://bmhstsa.com/post/get-ahead/</guid><description>&lt;h3 id="challenge-rating">Challenge Rating&lt;/h3>
+&lt;ul>
+&lt;li>Artificialness: &lt;code>5/10&lt;/code>&lt;/li>
+&lt;li>Skill: &lt;code>3/10&lt;/code>&lt;/li>
+&lt;li>Time: &lt;code>5 minutes&lt;/code>&lt;/li>
+&lt;/ul>
+&lt;p>&lt;em>Learn more about how we rate challenges &lt;a class="link" href="https://bmhstsa.com/post/rating" >here&lt;/a>.&lt;/em>&lt;/p>
+&lt;h2 id="what-are-http-verbs">What are HTTP verbs?&lt;/h2>
+&lt;p>Normally when you access a website, your browser makes an HTTP request to &lt;code>GET&lt;/code>
+content from the server. However, your browser isn&amp;rsquo;t always fetching data from a
+server, sometimes it &lt;code>POST&lt;/code>s data too (Such as when logging in to a website). HTTP
+verbs are the standardized method for telling the server what to do. The most common
+HTTP verbs are:&lt;/p>
+&lt;ul>
+&lt;li>&lt;code>GET&lt;/code>: fetch data from a server (eg: retrieve an HTML file)&lt;/li>
+&lt;li>&lt;code>HEAD&lt;/code>: check what the server will do before making a &lt;code>GET&lt;/code> request (eg: check response size before fetching something)&lt;/li>
+&lt;li>&lt;code>POST&lt;/code>: post data to a server (eg: log in to a website)&lt;/li>
+&lt;li>&lt;code>PUT&lt;/code>: update an existing resource&lt;/li>
+&lt;li>&lt;code>DELETE&lt;/code>: delete a resource&lt;/li>
+&lt;/ul>
+&lt;h2 id="solving-the-challenge">Solving the challenge&lt;/h2>
+&lt;p>Although the &lt;code>Get&lt;/code> in &lt;code>Get Ahead&lt;/code> may throw you off, remember that web browsers
+make &lt;code>GET&lt;/code> requests by default so this challenge may be a little too easy if
+all you had to do was just visit the link with a browser and open &lt;a class="link" href="https://developer.mozilla.org/en-US/docs/Learn/Common_questions/What_are_browser_developer_tools" target="_blank" rel="noopener"
+>the inspector&lt;/a>.
+Instead, focus on the &lt;code>Ahead&lt;/code> part - as in a &lt;code>HEAD&lt;/code> request. If you use a tool such
+as &lt;a class="link" href="https://www.postman.com" target="_blank" rel="noopener"
+>Postman&lt;/a>, this is fairly easy to do:
+&lt;img src="https://bmhstsa.com/post/get-ahead/postman.png" alt="Postman screenshot" />&lt;/p>
+&lt;p>Please note that the flag is a header, not the response body.&lt;/p></description></item><item><title>Rating</title><link>https://bmhstsa.com/post/rating/</link><pubDate>Tue, 30 Mar 2021 22:31:14 -0600</pubDate><guid>https://bmhstsa.com/post/rating/</guid><description>&lt;p>We rank CTF challenges on the following metrics:&lt;/p>
+&lt;ul>
+&lt;li>Artificialness&lt;/li>
+&lt;li>Skill&lt;/li>
+&lt;li>Time&lt;/li>
+&lt;/ul>
+&lt;h2 id="artificialness">Artificialness&lt;/h2>
+&lt;p>This metric measures how contrived or artificial a challenge is. This metric is
+measured on a scale from 1 to 10 where 1 represents a very realistic challenge
+while a 10 represents a very artificial challenge.&lt;/p>
+&lt;h2 id="skill">Skill&lt;/h2>
+&lt;p>This metric measures how much skill a challenge requires to solve. If multiple
+ways of solving a challenge are available, this metrics should reflect the easiest
+one. This metric is also measured on a scale from 1 to 10 where 1 represents a
+challenge a complete novice could solve and a 10 represents a challenge only subject
+experts could solve.&lt;/p>
+&lt;h2 id="time">Time&lt;/h2>
+&lt;p>This metric measures how much time a challenge requires to solve on the first time
+without any outside help. This metric is measured in hours and minutes.&lt;/p></description></item></channel></rss>
