@@ -53,8 +53,8 @@ SELECT username, password FROM users WHERE username=''' AND password='[PASSWORD 
 *Note: this is actually an invalid query but bare with me.*
 
 Notice how the syntax highlighting is different than when the server properly
-escapes the single-quote? That's because we now have an empty string (`''`) 
-followed by another string (`' AND password='`). This is called an injection
+escapes the single-quote? That's because we now have a single string starting
+with an escaped quote (`'' AND password=`). This is called an injection
 vulnerability because a crafty attacker could format the username or password
 in such a way that when the server concatenates the user-input together, it 
 generates a totally different, malicious query.
