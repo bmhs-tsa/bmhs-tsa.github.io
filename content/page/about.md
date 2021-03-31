@@ -25,3 +25,12 @@ eSports promote team-work, problem solving skills, and of course they're fun.
 ## Copyright
 Students retain full intellectual property rights to all content posted on both the
 source [GitHub repository](https://github.com/bmhs-tsa/bmhs-tsa.github.io) and this [website](https://bmhstsa.com).
+
+## Privacy Policy
+This website uses performance enhancement and security monitoring by Cloudflare.
+Please refer to the [Cloudflare privacy policy](https://www.cloudflare.com/cookie-policy/)
+for more information and the most up-to-date use of cookies on this site.
+
+This website uses Google Analytics for measuring user interaction. Please refer
+to the [Google Analytics Privacy Policy](https://policies.google.com/privacy)
+for more information and teh most up-to-date use of cookies on this site.
