@@ -1,6 +1,5 @@
 ---
 title: "About"
-date: 2021-03-30T14:14:19-06:00
 aliases:
   - about-us
   - about-hugo
