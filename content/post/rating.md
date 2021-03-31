@@ -1,5 +1,6 @@
 ---
 title: "Rating"
+description: "CTF ranking system"
 date: 2021-03-30T22:31:14-06:00
 categories: [
   "picoCTF"

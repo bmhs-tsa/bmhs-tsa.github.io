@@ -1,13 +1,14 @@
 ---
 title: "Web Gauntlet 2"
+description: "picoCTF writeup by Wakeful Cloud"
 date: 2021-03-30T23:26:46-06:00
-draft: true
 categories: [
   "picoCTF"
 ]
 tags: [
   "Web Exploitation",
-  "Injection Vulnerability"
+  "Injection Vulnerability",
+  "Wakeful Cloud"
 ]
 ---
 
@@ -17,6 +18,9 @@ tags: [
 * Time: `2-3 hours`
 
 *Learn more about how we rate challenges [here](/post/rating).*
+
+## Preface
+This is the followup challenge to [Web Gauntlet](https://play.picoctf.org/practice/challenge/88).
 
 ## What are SQL injections?
 SQL injections occur when a server improperly handles user input in such a
@@ -96,6 +100,6 @@ sounds confusing but it's somewhat simple when you see it written out:
 SELECT username, password FROM users WHERE username='admi'||CHAR(1540/LENGTH(' AND password='))||'';
 ```
 So if you set the `username` to `admi'||CHAR(1540/LENGTH(` and the password to
-`))||'`, you should see the flag in `filter.php`. Again, not the most elegant
+`))||'`, you should see the flag on `filter.php`. Again, not the most elegant
 solution. If you want to see a more elegant solution, check out the sequel to
 this challenge, [Web Gauntlet 3](/post/web-gauntlet-3).
