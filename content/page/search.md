@@ -1,6 +1,5 @@
 ---
 title: "Search"
-draft: true
 layout: "search"
 outputs:
   - html

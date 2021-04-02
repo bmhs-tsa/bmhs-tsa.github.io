@@ -1,5 +1,5 @@
 # Website
-[![GitHub Pages Status](https://img.shields.io/github/workflow/status/bmhs-tsa/bmhs-tsa.github.io/github%20pages?style=for-the-badge)](https://github.com/bmhs-tsa/bmhs-tsa.github.io/actions/workflows/gh-pages.yml)
+[![GitHub Pages Status](https://img.shields.io/github/workflow/status/bmhs-tsa/bmhs-tsa.github.io/gh-pages?style=for-the-badge)](https://github.com/bmhs-tsa/bmhs-tsa.github.io/actions/workflows/gh-pages.yml)
 
 The source for [bmhstsa.com](https://bmhstsa.com).
 
