@@ -28,7 +28,19 @@ before using the modulo operator to &lt;code>loop back&lt;/code>to the beginning
 >rot13.com&lt;/a>&lt;/li>
 &lt;li>&lt;a class="link" href="https://cryptii.com/pipes/rot13-decoder" target="_blank" rel="noopener"
 >cryptii.com/pipes/rot13-decoder&lt;/a>&lt;/li>
-&lt;/ul></description></item><item><title>Magikarp Ground Mission</title><link>https://bmhstsa.com/post/magikarp-ground-mission/</link><pubDate>Fri, 02 Apr 2021 16:46:31 -0600</pubDate><guid>https://bmhstsa.com/post/magikarp-ground-mission/</guid><description>&lt;h3 id="challenge-rating">Challenge Rating&lt;/h3>
+&lt;/ul></description></item><item><title>Static Aint Always Noise</title><link>https://bmhstsa.com/post/static-aint-always-noise/</link><pubDate>Fri, 02 Apr 2021 16:57:30 -0600</pubDate><guid>https://bmhstsa.com/post/static-aint-always-noise/</guid><description>&lt;h3 id="challenge-rating">Challenge Rating&lt;/h3>
+&lt;ul>
+&lt;li>Artificialness: &lt;code>2/10&lt;/code>&lt;/li>
+&lt;li>Skill: &lt;code>2/10&lt;/code>&lt;/li>
+&lt;li>Time: &lt;code>3 minutes&lt;/code>&lt;/li>
+&lt;/ul>
+&lt;p>&lt;em>Learn more about how we rate challenges &lt;a class="link" href="https://bmhstsa.com/post/rating" >here&lt;/a>.&lt;/em>&lt;/p>
+&lt;h3 id="what-software-do-you-need">What software do you need?&lt;/h3>
+&lt;p>Notepad or a text editor.&lt;/p>
+&lt;h3 id="what-do-you-need-to-know-in-order-to-solve-it">What do you need to know in order to solve it?&lt;/h3>
+&lt;p>That nobody expects Notepad.&lt;/p>
+&lt;h3 id="what-do-you-actually-do">What do you actually do?&lt;/h3>
+&lt;p>Open the file in Notepad and CTRL+F for picoCTF.&lt;/p></description></item><item><title>Magikarp Ground Mission</title><link>https://bmhstsa.com/post/magikarp-ground-mission/</link><pubDate>Fri, 02 Apr 2021 16:46:31 -0600</pubDate><guid>https://bmhstsa.com/post/magikarp-ground-mission/</guid><description>&lt;h3 id="challenge-rating">Challenge Rating&lt;/h3>
 &lt;ul>
 &lt;li>Artificialness: &lt;code>4/10&lt;/code>&lt;/li>
 &lt;li>Skill: &lt;code>3/10&lt;/code>&lt;/li>
@@ -47,7 +59,24 @@ you&amp;rsquo;re in has &lt;code>1of3.flag.txt&lt;/code> and &lt;code>instructio
 is split up into three different files. Use the &lt;code>cat&lt;/code> command to view these files
 and follow the instructions to get the rest of the flag. Combine each of the
 files in order (&lt;code>1of3.flag.txt&lt;/code>, &lt;code>2of3.flag.txt&lt;/code>, and &lt;code>3of3.flag.txt&lt;/code>) to get the
-flag!&lt;/p></description></item><item><title>Web Gauntlet 3</title><link>https://bmhstsa.com/post/web-gauntlet-3/</link><pubDate>Wed, 31 Mar 2021 00:32:29 -0600</pubDate><guid>https://bmhstsa.com/post/web-gauntlet-3/</guid><description>&lt;h3 id="challenge-rating">Challenge Rating&lt;/h3>
+flag!&lt;/p></description></item><item><title>Matryoshka Doll</title><link>https://bmhstsa.com/post/matryoshka-doll/</link><pubDate>Fri, 02 Apr 2021 16:32:39 -0600</pubDate><guid>https://bmhstsa.com/post/matryoshka-doll/</guid><description>&lt;h3 id="challenge-rating">Challenge Rating&lt;/h3>
+&lt;ul>
+&lt;li>Artificialness: &lt;code>2/10&lt;/code>&lt;/li>
+&lt;li>Skill: &lt;code>4/10&lt;/code>&lt;/li>
+&lt;li>Time: &lt;code>10 minutes&lt;/code>&lt;/li>
+&lt;/ul>
+&lt;p>&lt;em>Learn more about how we rate challenges &lt;a class="link" href="https://bmhstsa.com/post/rating" >here&lt;/a>.&lt;/em>&lt;/p>
+&lt;h3 id="what-software-do-you-need">What software do you need?&lt;/h3>
+&lt;p>Any type of zip extraction, &lt;a class="link" href="https://www.7-zip.org/" target="_blank" rel="noopener"
+>7zip&lt;/a> or &lt;a class="link" href="https://www.win-rar.com/start.html" target="_blank" rel="noopener"
+>WinRAR&lt;/a> work fine.&lt;/p>
+&lt;h3 id="what-do-you-need-to-know-in-order-to-solve-it">What do you need to know in order to solve it?&lt;/h3>
+&lt;p>The aspect of this challenge is hidden files inside image files.&lt;/p>
+&lt;h3 id="what-do-you-actually-do">What do you actually do?&lt;/h3>
+&lt;p>Archive the original file with (in my case) WinRAR, then extract it.
+In the extracted file, you&amp;rsquo;ll find another file and so on, so forth.
+Continue the archive-extract until you find a text file which
+contains the flag.&lt;/p></description></item><item><title>Web Gauntlet 3</title><link>https://bmhstsa.com/post/web-gauntlet-3/</link><pubDate>Wed, 31 Mar 2021 00:32:29 -0600</pubDate><guid>https://bmhstsa.com/post/web-gauntlet-3/</guid><description>&lt;h3 id="challenge-rating">Challenge Rating&lt;/h3>
 &lt;ul>
 &lt;li>Artificialness: &lt;code>3/10&lt;/code>&lt;/li>
 &lt;li>Skill: &lt;code>6/10&lt;/code>&lt;/li>
