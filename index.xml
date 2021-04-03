@@ -1,4 +1,133 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>BMHS TSA</title><link>https://bmhstsa.com/</link><description>Recent content on BMHS TSA</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Fri, 02 Apr 2021 16:58:00 -0600</lastBuildDate><atom:link href="https://bmhstsa.com/index.xml" rel="self" type="application/rss+xml"/><item><title>Mod 13</title><link>https://bmhstsa.com/post/mod-13/</link><pubDate>Fri, 02 Apr 2021 16:58:00 -0600</pubDate><guid>https://bmhstsa.com/post/mod-13/</guid><description>&lt;h1 id="mod-26">Mod 26&lt;/h1>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>BMHS TSA</title><link>https://bmhstsa.com/</link><description>Recent content on BMHS TSA</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Fri, 02 Apr 2021 23:39:19 -0600</lastBuildDate><atom:link href="https://bmhstsa.com/index.xml" rel="self" type="application/rss+xml"/><item><title>X Marks the Spot</title><link>https://bmhstsa.com/post/x-marks-the-spot/</link><pubDate>Fri, 02 Apr 2021 23:39:19 -0600</pubDate><guid>https://bmhstsa.com/post/x-marks-the-spot/</guid><description>&lt;h3 id="challenge-rating">Challenge Rating&lt;/h3>
+&lt;ul>
+&lt;li>Artificialness: &lt;code>3/10&lt;/code>&lt;/li>
+&lt;li>Skill: &lt;code>7/10&lt;/code>&lt;/li>
+&lt;li>Time: &lt;code>4-6 hours&lt;/code>&lt;/li>
+&lt;/ul>
+&lt;p>&lt;em>Learn more about how we rate challenges &lt;a class="link" href="https://bmhstsa.com/post/rating" >here&lt;/a>.&lt;/em>&lt;/p>
+&lt;h2 id="preface">Preface&lt;/h2>
+&lt;p>This write-up assumes you understand what an injection vulnerability is. If you
+don&amp;rsquo;t you, should check out &lt;a class="link" href="https://bmhstsa.com/post/web-gauntlet-2" >Web Gauntlet 2&lt;/a>.&lt;/p>
+&lt;h2 id="what-is-xpath">What is XPath?&lt;/h2>
+&lt;p>&lt;a class="link" href="https://en.wikipedia.org/wiki/XPath" target="_blank" rel="noopener"
+>XPath&lt;/a> is the standard way of querying
+data from an XML document (Similar to SQL). There are a few basic things you
+need to know about XPath:&lt;/p>
+&lt;ol>
+&lt;li>Think of XPath queries like a file-path (&lt;code>/&lt;/code> separated, items are written in
+a descending, hierarchical-order)&lt;/li>
+&lt;li>A &lt;code>/&lt;/code> represents the root element&lt;/li>
+&lt;li>A &lt;code>//&lt;/code> represents any element in any location&lt;/li>
+&lt;li>You can extract an element&amp;rsquo;s content with &lt;code>{Element}/text()&lt;/code>
+(eg: &lt;code>//user/name/text()&lt;/code> equals &lt;code>guest&lt;/code>)&lt;/li>
+&lt;li>You can get a string&amp;rsquo;s length with &lt;a class="link" href="https://developer.mozilla.org/en-US/docs/Web/XPath/Functions/string-length" target="_blank" rel="noopener"
+>&lt;code>string-length&lt;/code>&lt;/a>
+(eg: &lt;code>string-length('abc')&lt;/code> equals &lt;code>3&lt;/code>)&lt;/li>
+&lt;li>You can get a substring with &lt;a class="link" href="https://developer.mozilla.org/en-US/docs/Web/XPath/Functions/substring" target="_blank" rel="noopener"
+>&lt;code>substring&lt;/code>&lt;/a>
+(eg: &lt;code>substring('abc', 2, 1)&lt;/code> equals &lt;code>b&lt;/code>; note: &lt;strong>XPath is one-indexed&lt;/strong>)&lt;/li>
+&lt;li>You filter elements with &lt;code>[{Condition}]&lt;/code>
+&lt;ol>
+&lt;li>You can filter by position with &lt;code>[position() {Operator} {Number}]&lt;/code>
+(eg: &lt;code>[position() = 2]&lt;/code>; note: &lt;strong>XPath is one-indexed&lt;/strong>)&lt;/li>
+&lt;li>You can filter by string-matches with &lt;code>['A' = 'B']&lt;/code>&lt;/li>
+&lt;li>You can join different conditions together with &lt;code>or&lt;/code> or &lt;code>and&lt;/code>&lt;/li>
+&lt;/ol>
+&lt;/li>
+&lt;/ol>
+&lt;h2 id="solving-the-challenge">Solving the challenge&lt;/h2>
+&lt;h3 id="probable-query">Probable Query&lt;/h3>
+&lt;p>In order to develop an injection, it helps to have a query (Although it likely
+won&amp;rsquo;t be the same as the actual query picoCTF uses). To develop it, think about
+what conditions the server uses to find a user element: does the user&amp;rsquo;s name equal
+a user-controlled valued and does the user&amp;rsquo;s password equal another user-controlled
+value? The probable query I developed was:&lt;/p>
+&lt;div class="highlight">&lt;pre class="chroma">&lt;code class="language-css" data-lang="css">&lt;span class="o">//&lt;/span>&lt;span class="nt">user&lt;/span>&lt;span class="o">[&lt;/span>&lt;span class="nt">name&lt;/span>&lt;span class="o">/&lt;/span>&lt;span class="nt">text&lt;/span>&lt;span class="o">()=&lt;/span>&lt;span class="s1">&amp;#39;[USERNAME INPUT]&amp;#39;&lt;/span> &lt;span class="nt">and&lt;/span> &lt;span class="nt">pass&lt;/span>&lt;span class="o">/&lt;/span>&lt;span class="nt">text&lt;/span>&lt;span class="o">()=&lt;/span>&lt;span class="s1">&amp;#39;[PASSWORD INPUT]&amp;#39;&lt;/span>&lt;span class="o">]&lt;/span>
+&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="developing-an-injection">Developing an injection&lt;/h3>
+&lt;p>Now that we have a probably query, we can start messing around with single-quote
+injection to try to escape the user-controlled strings. I found using &lt;code>abc&lt;/code> as
+the username and &lt;code>' or {CONDITION} and 'a'='a&lt;/code> as the password allows for us to
+run arbitrary boolean expressions on the server (Note that &lt;code>You're on the right path.&lt;/code>
+indicates &lt;code>true&lt;/code> while &lt;code>Login failure.&lt;/code> indicates &lt;code>false&lt;/code>). While this doesn&amp;rsquo;t
+allow us to return strings, it&amp;rsquo;s a start.&lt;/p>
+&lt;h3 id="exfiltrating-data">Exfiltrating data&lt;/h3>
+&lt;p>We know we can evaluate a boolean expression but how can we extract a string? The
+answer is by testing each character in a string until we get the correct
+character and with enough characters, the entire string.&lt;/p>
+&lt;p>Initially it may seem like this a place where binary search would work well - we
+could possibly check if the nth character code is greater than the a certain
+number however the &lt;a class="link" href="https://www.oreilly.com/library/view/xslt-2nd-edition/9780596527211/re156.html" target="_blank" rel="noopener"
+>&lt;code>fn:string-to-codepoints&lt;/code>&lt;/a>
+function is disabled. Therefore, we will have to go through each character
+sequentially (Linear search). This is the part where this challenge gets very painful. The good news is that we can reasonably assume all characters are inside
+of the &lt;a class="link" href="https://flaviocopes.com/printable-ascii-characters/" target="_blank" rel="noopener"
+>printable ASCII range&lt;/a>
+(97 characters) which is far easier to guess than say &lt;a class="link" href="https://en.wikipedia.org/wiki/Unicode" target="_blank" rel="noopener"
+>Unicode&lt;/a>
+(&lt;a class="link" href="https://www.unicode.org/versions/Unicode13.0.0/" target="_blank" rel="noopener"
+>143,859 characters&lt;/a>).&lt;/p>
+&lt;p>To expedite this process, I developed a mini library for data extraction
+specifically for this challenge. You can view the source code
+&lt;a class="link" href="https://gist.github.com/Wakeful-Cloud/82f56b039d37d8db291fd12ea6de8f15" target="_blank" rel="noopener"
+>here&lt;/a>.
+This took a long time to extract because I followed multiple incorrect paths
+(Hence the flag&amp;rsquo;s message); but I did find &lt;a class="link" href="https://cutt.ly/9xhyyyR" target="_blank" rel="noopener"
+>this XML playground&lt;/a>
+to be extremely helpful for constructing XPath queries. Eventually, I was able
+to extract the below XML document (And the flag too):&lt;/p>
+&lt;div class="highlight">&lt;pre class="chroma">&lt;code class="language-xml" data-lang="xml">&lt;span class="nt">&amp;lt;db&amp;gt;&lt;/span>
+&lt;span class="nt">&amp;lt;poems&amp;gt;&lt;/span>
+&lt;span class="nt">&amp;lt;poem&amp;gt;&lt;/span>
+&lt;span class="nt">&amp;lt;author&amp;gt;&lt;/span>Robert Frost&lt;span class="nt">&amp;lt;/author&amp;gt;&lt;/span>
+&lt;span class="nt">&amp;lt;title&amp;gt;&lt;/span>The Road Not Taken&lt;span class="nt">&amp;lt;/title&amp;gt;&lt;/span>
+&lt;span class="nt">&amp;lt;text&amp;gt;&lt;/span>[UNKNOWN]&lt;span class="nt">&amp;lt;/text&amp;gt;&lt;/span>
+&lt;span class="nt">&amp;lt;/poem&amp;gt;&lt;/span>
+&lt;span class="nt">&amp;lt;poem&amp;gt;&lt;/span>
+&lt;span class="nt">&amp;lt;author&amp;gt;&lt;/span>William Carlos Williams&lt;span class="nt">&amp;lt;/author&amp;gt;&lt;/span>
+&lt;span class="nt">&amp;lt;title&amp;gt;&lt;/span>The Red Wheelbarrow&lt;span class="nt">&amp;lt;/title&amp;gt;&lt;/span>
+&lt;span class="nt">&amp;lt;text&amp;gt;&lt;/span>[UNKNOWN]&lt;span class="nt">&amp;lt;/text&amp;gt;&lt;/span>
+&lt;span class="nt">&amp;lt;/poem&amp;gt;&lt;/span>
+&lt;span class="nt">&amp;lt;poem&amp;gt;&lt;/span>
+&lt;span class="nt">&amp;lt;author&amp;gt;&lt;/span>Pablo Neruda&lt;span class="nt">&amp;lt;/author&amp;gt;&lt;/span>
+&lt;span class="nt">&amp;lt;title&amp;gt;&lt;/span>Oda a la papa&lt;span class="nt">&amp;lt;/title&amp;gt;&lt;/span>
+&lt;span class="nt">&amp;lt;text&amp;gt;&lt;/span>[UNKNOWN]&lt;span class="nt">&amp;lt;/text&amp;gt;&lt;/span>
+&lt;span class="nt">&amp;lt;/poem&amp;gt;&lt;/span>
+&lt;span class="nt">&amp;lt;poem&amp;gt;&lt;/span>
+&lt;span class="nt">&amp;lt;author&amp;gt;&lt;/span>Gwendolyn Brooks&lt;span class="nt">&amp;lt;/author&amp;gt;&lt;/span>
+&lt;span class="nt">&amp;lt;title&amp;gt;&lt;/span>We Real Cool&lt;span class="nt">&amp;lt;/title&amp;gt;&lt;/span>
+&lt;span class="nt">&amp;lt;text&amp;gt;&lt;/span>[UNKNOWN]&lt;span class="nt">&amp;lt;/text&amp;gt;&lt;/span>
+&lt;span class="nt">&amp;lt;/poem&amp;gt;&lt;/span>
+&lt;span class="nt">&amp;lt;poem&amp;gt;&lt;/span>
+&lt;span class="nt">&amp;lt;author&amp;gt;&lt;/span>William Blake&lt;span class="nt">&amp;lt;/author&amp;gt;&lt;/span>
+&lt;span class="nt">&amp;lt;title&amp;gt;&lt;/span>The Tyger&lt;span class="nt">&amp;lt;/title&amp;gt;&lt;/span>
+&lt;span class="nt">&amp;lt;text&amp;gt;&lt;/span>[UNKNOWN]&lt;span class="nt">&amp;lt;/text&amp;gt;&lt;/span>
+&lt;span class="nt">&amp;lt;/poem&amp;gt;&lt;/span>
+&lt;span class="nt">&amp;lt;/poems&amp;gt;&lt;/span>
+&lt;span class="nt">&amp;lt;users&amp;gt;&lt;/span>
+&lt;span class="nt">&amp;lt;user&amp;gt;&lt;/span>
+&lt;span class="nt">&amp;lt;name&amp;gt;&lt;/span>guest&lt;span class="nt">&amp;lt;/name&amp;gt;&lt;/span>
+&lt;span class="nt">&amp;lt;pass&amp;gt;&lt;/span>thisisnottheflag&lt;span class="nt">&amp;lt;/pass&amp;gt;&lt;/span>
+&lt;span class="nt">&amp;lt;/user&amp;gt;&lt;/span>
+&lt;span class="nt">&amp;lt;user&amp;gt;&lt;/span>
+&lt;span class="nt">&amp;lt;name&amp;gt;&lt;/span>bob&lt;span class="nt">&amp;lt;/name&amp;gt;&lt;/span>
+&lt;span class="nt">&amp;lt;pass&amp;gt;&lt;/span>thisisnottheflageither&lt;span class="nt">&amp;lt;/pass&amp;gt;&lt;/span>
+&lt;span class="nt">&amp;lt;/user&amp;gt;&lt;/span>
+&lt;span class="nt">&amp;lt;user&amp;gt;&lt;/span>
+&lt;span class="nt">&amp;lt;name&amp;gt;&lt;/span>admin&lt;span class="nt">&amp;lt;/name&amp;gt;&lt;/span>
+&lt;span class="nt">&amp;lt;pass&amp;gt;&lt;/span>picoCTF{h0p3fully_u_t0ok_th3_r1ght_xp4th_f0505d9c}&lt;span class="nt">&amp;lt;/pass&amp;gt;&lt;/span>
+&lt;span class="nt">&amp;lt;/user&amp;gt;&lt;/span>
+&lt;span class="nt">&amp;lt;/users&amp;gt;&lt;/span>
+&lt;span class="nt">&amp;lt;/db&amp;gt;&lt;/span>
+&lt;/code>&lt;/pre>&lt;/div>&lt;p>&lt;em>Note: &lt;code>[UNKNOWN]&lt;/code> represent strings that are very long and would take a long time to extract; you can probably make an educates guess though.&lt;/em>&lt;/p>
+&lt;h3 id="data-verification">Data verification&lt;/h3>
+&lt;p>While extracting the data is very time-consuming and requires potentially
+thousands of HTTP requests, verifying the data is easy. For example, here&amp;rsquo;s
+the login credentials to verify the flag (Which could change if you&amp;rsquo;re reading
+this far in the future):&lt;/p>
+&lt;ul>
+&lt;li>Username: &lt;code>abc&lt;/code>&lt;/li>
+&lt;li>Password: &lt;code>' or /db/users/user[position()=3]/pass/text() = 'picoCTF{h0p3fully_u_t0ok_th3_r1ght_xp4th_f0505d9c}' and 'a'='a&lt;/code>&lt;/li>
+&lt;/ul></description></item><item><title>Mod 13</title><link>https://bmhstsa.com/post/mod-13/</link><pubDate>Fri, 02 Apr 2021 16:58:00 -0600</pubDate><guid>https://bmhstsa.com/post/mod-13/</guid><description>&lt;h1 id="mod-26">Mod 26&lt;/h1>
 &lt;p>This is a rot 13 cypher!&lt;/p>
 &lt;h2 id="what-is-rot-13">What is ROT 13?&lt;/h2>
 &lt;p>ROT 13 is a cipher where every letter is rotated by 13 letters within the alphabet. It is a type of &lt;a class="link" href="https://en.wikipedia.org/wiki/Caesar_cipher" target="_blank" rel="noopener"
