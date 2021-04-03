@@ -5,7 +5,7 @@ paginate = 5
 theme = "hugo-theme-stack"
 title = "BMHS TSA"
 
-googleAnalytics = "G-RS8CPZDN2H"
+googleAnalytics = "UA-193505887-1"
 
 [permalinks]
 post = "/post/:slug/"
