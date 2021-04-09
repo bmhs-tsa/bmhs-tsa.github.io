@@ -1,4 +1,20 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>BMHS TSA</title><link>https://bmhstsa.com/</link><description>Recent content on BMHS TSA</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Fri, 02 Apr 2021 23:39:19 -0600</lastBuildDate><atom:link href="https://bmhstsa.com/index.xml" rel="self" type="application/rss+xml"/><item><title>X Marks the Spot</title><link>https://bmhstsa.com/post/x-marks-the-spot/</link><pubDate>Fri, 02 Apr 2021 23:39:19 -0600</pubDate><guid>https://bmhstsa.com/post/x-marks-the-spot/</guid><description>&lt;h3 id="challenge-rating">Challenge Rating&lt;/h3>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>BMHS TSA</title><link>https://bmhstsa.com/</link><description>Recent content on BMHS TSA</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Fri, 09 Apr 2021 16:06:11 -0600</lastBuildDate><atom:link href="https://bmhstsa.com/index.xml" rel="self" type="application/rss+xml"/><item><title>crackme-py</title><link>https://bmhstsa.com/post/crackme-py/</link><pubDate>Fri, 09 Apr 2021 16:06:11 -0600</pubDate><guid>https://bmhstsa.com/post/crackme-py/</guid><description>&lt;h3 id="challenge-rating">Challenge Rating&lt;/h3>
+&lt;ul>
+&lt;li>Artificialness: &lt;code>5/10&lt;/code>&lt;/li>
+&lt;li>Skill: &lt;code>3/10&lt;/code>&lt;/li>
+&lt;li>Time: &lt;code>5-10 minutes&lt;/code>&lt;/li>
+&lt;/ul>
+&lt;p>&lt;em>Learn more about how we rate challenges &lt;a class="link" href="https://bmhstsa.com/post/rating" >here&lt;/a>.&lt;/em>&lt;/p>
+&lt;p>The CTF starts out by giving you a python file called &lt;code>crackme.py&lt;/code>. When you run
+it, it just takes two numbers as input and outputs the largest. Not very helpful
+for finding flags, unless&amp;hellip;&lt;/p>
+&lt;h3 id="how-do-we-find-the-flag">How do we find the flag?&lt;/h3>
+&lt;p>When you open the file in any text editor, you&amp;rsquo;ll see that there&amp;rsquo;s more to this
+program than it seems. There&amp;rsquo;s a variable called &lt;code>bezos_cc_secret&lt;/code> that seemingly
+has gibberish in it. But there&amp;rsquo;s another function, never used in the entire
+program, called &lt;code>decode_secret&lt;/code> which (you guessed it) decodes &lt;code>bezos_cc_secret&lt;/code>.
+Just call the function at the end of the program and run it again and you will
+have your flag.&lt;/p></description></item><item><title>X Marks the Spot</title><link>https://bmhstsa.com/post/x-marks-the-spot/</link><pubDate>Fri, 02 Apr 2021 23:39:19 -0600</pubDate><guid>https://bmhstsa.com/post/x-marks-the-spot/</guid><description>&lt;h3 id="challenge-rating">Challenge Rating&lt;/h3>
 &lt;ul>
 &lt;li>Artificialness: &lt;code>3/10&lt;/code>&lt;/li>
 &lt;li>Skill: &lt;code>7/10&lt;/code>&lt;/li>
