@@ -1,7 +1,6 @@
 ---
 title: "crackme-py"
 description: "picoCTF writeup by superamario64"
-# CHANGE DATE
 date: 2021-04-09T16:06:11-06:00
 categories: [
   "picoCTF"
