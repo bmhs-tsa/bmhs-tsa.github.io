@@ -12,7 +12,7 @@ tags: [
 ---
 
 ### Challenge Rating
-* Artificialness: `2/10`
+* Artificialness: `8/10`
 * Skill: `2/10`
 * Time: `3 minutes`
 
