@@ -32,10 +32,10 @@ different decryption websites.
 
 ### What do you actually do?
 Open the file in Wireshark, first of all. Then `Export Objects` into `HTTP` and 
-click `Save All`. It'll put all of the HTTP requests, which in this case, 
-involves text files. Go into the destination of your choice, mine was Downloads
-, and open the `%5c` (which is a [percent-encoded](https://en.wikipedia.org/wiki
-/Percent-encoding) character) folder in a text editor of your choice. The text 
-is encoded in ROT13, which I encoded after trying several other algorithms. The
- encrypted text contains the flag. 
+click `Save All`. It'll put all of the HTTP requests into the destination of your
+choice, mine was Downloads, and then open the `%5c` (which is a 
+[percent-encoded](https://en.wikipedia.org/wiki/Percent-encoding) character) 
+folder in a text editor of your choice. The text is encoded in ROT13 which I 
+encoded after trying several other algorithms. The encrypted text contains the 
+flag. 
 
