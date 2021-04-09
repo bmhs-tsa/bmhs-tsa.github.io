@@ -18,8 +18,8 @@ tags: [
 
 *Learn more about how we rate challenges [here](/post/rating).*
 
-
 This challenge is a Wireshark-based challenge, which involves analyzing network traffic through Wireshark. 
+
 ### What software do you need?
 [Wireshark](https://www.wireshark.org/) and a [ROT13](https://rot13.com/) decoder, which you can find online.
 
