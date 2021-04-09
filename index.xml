@@ -14,7 +14,33 @@ program than it seems. There&amp;rsquo;s a variable called &lt;code>bezos_cc_sec
 has gibberish in it. But there&amp;rsquo;s another function, never used in the entire
 program, called &lt;code>decode_secret&lt;/code> which (you guessed it) decodes &lt;code>bezos_cc_secret&lt;/code>.
 Just call the function at the end of the program and run it again and you will
-have your flag.&lt;/p></description></item><item><title>X Marks the Spot</title><link>https://bmhstsa.com/post/x-marks-the-spot/</link><pubDate>Fri, 02 Apr 2021 23:39:19 -0600</pubDate><guid>https://bmhstsa.com/post/x-marks-the-spot/</guid><description>&lt;h3 id="challenge-rating">Challenge Rating&lt;/h3>
+have your flag.&lt;/p></description></item><item><title>Wireshark Doo Dooo Do Doo</title><link>https://bmhstsa.com/post/wireshark-doo-dooo-do-doo/</link><pubDate>Fri, 09 Apr 2021 15:48:38 -0600</pubDate><guid>https://bmhstsa.com/post/wireshark-doo-dooo-do-doo/</guid><description>&lt;h3 id="challenge-rating">Challenge Rating&lt;/h3>
+&lt;ul>
+&lt;li>Artificialness: &lt;code>7/10&lt;/code>&lt;/li>
+&lt;li>Skill: &lt;code>4/10&lt;/code>&lt;/li>
+&lt;li>Time: &lt;code>15-30 minutes&lt;/code>&lt;/li>
+&lt;/ul>
+&lt;p>&lt;em>Learn more about how we rate challenges &lt;a class="link" href="https://bmhstsa.com/post/rating" >here&lt;/a>.&lt;/em>&lt;/p>
+&lt;p>This challenge is a Wireshark-based challenge, which involves analyzing network
+traffic through Wireshark.&lt;/p>
+&lt;h3 id="what-software-do-you-need">What software do you need?&lt;/h3>
+&lt;p>&lt;a class="link" href="https://www.wireshark.org/" target="_blank" rel="noopener"
+>Wireshark&lt;/a> and a &lt;a class="link" href="https://rot13.com/" target="_blank" rel="noopener"
+>ROT13&lt;/a> decoder,
+which you can find online.&lt;/p>
+&lt;h3 id="what-do-you-need-to-know-in-order-to-solve-it">What do you need to know in order to solve it?&lt;/h3>
+&lt;p>You need to know how to export Wireshark objects into HTTP and possibly how to
+recognize ROT13 encryptions if you don&amp;rsquo;t want to spend 20 minutes looking up
+different decryption websites.&lt;/p>
+&lt;h3 id="what-do-you-actually-do">What do you actually do?&lt;/h3>
+&lt;p>Open the file in Wireshark, first of all. Then &lt;code>Export Objects&lt;/code> into &lt;code>HTTP&lt;/code> and
+click &lt;code>Save All&lt;/code>. It&amp;rsquo;ll put all of the HTTP requests into the destination of your
+choice, mine was Downloads, and then open the &lt;code>%5c&lt;/code> (which is a
+&lt;a class="link" href="https://en.wikipedia.org/wiki/Percent-encoding" target="_blank" rel="noopener"
+>percent-encoded&lt;/a> character)
+folder in a text editor of your choice. The text is encoded in ROT13 which I
+encoded after trying several other algorithms. The encrypted text contains the
+flag.&lt;/p></description></item><item><title>X Marks the Spot</title><link>https://bmhstsa.com/post/x-marks-the-spot/</link><pubDate>Fri, 02 Apr 2021 23:39:19 -0600</pubDate><guid>https://bmhstsa.com/post/x-marks-the-spot/</guid><description>&lt;h3 id="challenge-rating">Challenge Rating&lt;/h3>
 &lt;ul>
 &lt;li>Artificialness: &lt;code>3/10&lt;/code>&lt;/li>
 &lt;li>Skill: &lt;code>7/10&lt;/code>&lt;/li>
@@ -175,7 +201,7 @@ before using the modulo operator to &lt;code>loop back&lt;/code>to the beginning
 >cryptii.com/pipes/rot13-decoder&lt;/a>&lt;/li>
 &lt;/ul></description></item><item><title>Static Aint Always Noise</title><link>https://bmhstsa.com/post/static-aint-always-noise/</link><pubDate>Fri, 02 Apr 2021 16:57:30 -0600</pubDate><guid>https://bmhstsa.com/post/static-aint-always-noise/</guid><description>&lt;h3 id="challenge-rating">Challenge Rating&lt;/h3>
 &lt;ul>
-&lt;li>Artificialness: &lt;code>2/10&lt;/code>&lt;/li>
+&lt;li>Artificialness: &lt;code>8/10&lt;/code>&lt;/li>
 &lt;li>Skill: &lt;code>2/10&lt;/code>&lt;/li>
 &lt;li>Time: &lt;code>3 minutes&lt;/code>&lt;/li>
 &lt;/ul>
@@ -206,7 +232,7 @@ and follow the instructions to get the rest of the flag. Combine each of the
 files in order (&lt;code>1of3.flag.txt&lt;/code>, &lt;code>2of3.flag.txt&lt;/code>, and &lt;code>3of3.flag.txt&lt;/code>) to get the
 flag!&lt;/p></description></item><item><title>Matryoshka Doll</title><link>https://bmhstsa.com/post/matryoshka-doll/</link><pubDate>Fri, 02 Apr 2021 16:32:39 -0600</pubDate><guid>https://bmhstsa.com/post/matryoshka-doll/</guid><description>&lt;h3 id="challenge-rating">Challenge Rating&lt;/h3>
 &lt;ul>
-&lt;li>Artificialness: &lt;code>2/10&lt;/code>&lt;/li>
+&lt;li>Artificialness: &lt;code>6/10&lt;/code>&lt;/li>
 &lt;li>Skill: &lt;code>4/10&lt;/code>&lt;/li>
 &lt;li>Time: &lt;code>10 minutes&lt;/code>&lt;/li>
 &lt;/ul>
@@ -216,7 +242,7 @@ flag!&lt;/p></description></item><item><title>Matryoshka Doll</title><link>https
 >7zip&lt;/a> or &lt;a class="link" href="https://www.win-rar.com/start.html" target="_blank" rel="noopener"
 >WinRAR&lt;/a> work fine.&lt;/p>
 &lt;h3 id="what-do-you-need-to-know-in-order-to-solve-it">What do you need to know in order to solve it?&lt;/h3>
-&lt;p>The aspect of this challenge is hidden files inside image files.&lt;/p>
+&lt;p>The aspect of this challenge is to find hidden files inside image files.&lt;/p>
 &lt;h3 id="what-do-you-actually-do">What do you actually do?&lt;/h3>
 &lt;p>Archive the original file with (in my case) WinRAR, then extract it.
 In the extracted file, you&amp;rsquo;ll find another file and so on, so forth.
