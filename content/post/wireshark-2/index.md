@@ -18,3 +18,7 @@ tags: [
 * Time: `3 hours`
 
 *Learn more about how we rate challenges [here](/post/rating).*
+
+This is another Wireshark challenge, expanding on the 
+[first challenge](/post/wireshark-1). 
+Wireshark is a piece of software used to monitor network traffic.
