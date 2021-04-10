@@ -31,8 +31,8 @@ the responses from `http://18.217.1.57/flag` and the AWS EC2 token in packet
 
 After [Wakeful-Cloud](https://github.com/wakeful-cloud) and I made a script to
 extract all of the flags, I realized they were red herrings. Then I found the
-DNS queries to `*.reddshrimpandherring.com` which I assumed were also red
-herrings. This is the point when Wakeful-Cloud switched from helping me to
+DNS queries to `*.reddshrimpandherring.com` and looked through the given website but 
+found nothing. This is the point when Wakeful-Cloud switched from helping me to
 actually working to solve the challenge.
 
 ## DNS queries
