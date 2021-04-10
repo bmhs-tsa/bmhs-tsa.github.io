@@ -24,7 +24,11 @@ eSports promote team-work, problem solving skills, and of course they're fun.
 
 ## Copyright
 Students retain full intellectual property rights to all content posted on both the
-source [GitHub repository](https://github.com/bmhs-tsa/bmhs-tsa.github.io) and this [website](https://bmhstsa.com).
+source [GitHub repository](https://github.com/bmhs-tsa/bmhs-tsa.github.io) and this
+[website](https://bmhstsa.com). All student-generated content is licensed under the
+[Creative Commons Attribution Non-Commercial Share-Alike 4.0 International license](https://creativecommons.org/licenses/by-nc-sa/4.0/)
+**by default** but be sure to check the bottom of each post to be sure. All other
+works of BMHS TSA are licensed under the [MIT Open Source license](https://opensource.org/licenses/MIT).
 
 ## Privacy Policy
 This website uses performance enhancement and security monitoring by Cloudflare.
