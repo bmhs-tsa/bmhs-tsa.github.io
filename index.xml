@@ -14,7 +14,87 @@ program than it seems. There&amp;rsquo;s a variable called &lt;code>bezos_cc_sec
 has gibberish in it. But there&amp;rsquo;s another function, never used in the entire
 program, called &lt;code>decode_secret&lt;/code> which (you guessed it) decodes &lt;code>bezos_cc_secret&lt;/code>.
 Just call the function at the end of the program and run it again and you will
-have your flag.&lt;/p></description></item><item><title>Wireshark Doo Dooo Do Doo</title><link>https://bmhstsa.com/post/wireshark-doo-dooo-do-doo/</link><pubDate>Fri, 09 Apr 2021 15:48:38 -0600</pubDate><guid>https://bmhstsa.com/post/wireshark-doo-dooo-do-doo/</guid><description>&lt;h3 id="challenge-rating">Challenge Rating&lt;/h3>
+have your flag.&lt;/p></description></item><item><title>Wireshark 2</title><link>https://bmhstsa.com/post/wireshark-2/</link><pubDate>Fri, 09 Apr 2021 15:58:15 -0600</pubDate><guid>https://bmhstsa.com/post/wireshark-2/</guid><description>&lt;h3 id="challenge-rating">Challenge Rating&lt;/h3>
+&lt;ul>
+&lt;li>Artificialness: &lt;code>7/10&lt;/code>&lt;/li>
+&lt;li>Skill: &lt;code>5/10&lt;/code>&lt;/li>
+&lt;li>Time: &lt;code>3 hours&lt;/code>&lt;/li>
+&lt;/ul>
+&lt;p>&lt;em>Learn more about how we rate challenges &lt;a class="link" href="https://bmhstsa.com/post/rating" >here&lt;/a>.&lt;/em>&lt;/p>
+&lt;p>This is another Wireshark challenge, expanding on the &lt;a class="link" href="https://bmhstsa.com/post/wireshark-1" >first challenge&lt;/a>.
+Wireshark is a piece of software used to monitor network traffic.&lt;/p>
+&lt;h2 id="initial-analysis">Initial analysis&lt;/h2>
+&lt;p>Starting off I (&lt;a class="link" href="https://github.com/loogalicious" target="_blank" rel="noopener"
+>loogalicious&lt;/a>) opened the
+file in Wireshark. After browsing through it, I noticed 90 or so flags in
+the responses from &lt;code>http://18.217.1.57/flag&lt;/code> and the AWS EC2 token in packet
+&lt;code>4344&lt;/code> caught my eye:
+&lt;img src="https://bmhstsa.com/post/wireshark-2/wireshark-token.png" alt="Wireshark token screenshot" />&lt;/p>
+&lt;p>After &lt;a class="link" href="https://github.com/wakeful-cloud" target="_blank" rel="noopener"
+>Wakeful-Cloud&lt;/a> and I made a script to
+extract all of the flags, I realized they were red herrings. Then I found the
+DNS queries to &lt;code>*.reddshrimpandherring.com&lt;/code> and looked through the given website but
+found nothing. This is the point when Wakeful-Cloud switched from helping me to
+actually working to solve the challenge.&lt;/p>
+&lt;h2 id="dns-queries">DNS queries&lt;/h2>
+&lt;p>The first thing I (Wakeful-Cloud) did towards solving this challenge was to sort
+by packet protocol and just familiarize myself with the capture. This also helps
+to weed out any &lt;em>noise&lt;/em> that may have been generated (Since the &lt;em>noise&lt;/em> is often
+generated from a different application/protocol). There were a few odd things
+that I noticed such as an enormous amount of &lt;strong>invalid&lt;/strong> DNS queries to
+&lt;code>*.reddshrimpandherring.com&lt;/code>:
+&lt;img src="https://bmhstsa.com/post/wireshark-2/wireshark-dns-1.png" alt="Wireshark DNS screenshot" />&lt;/p>
+&lt;p>What really bothered me is why there were so many invalid queries. I&amp;rsquo;d expect
+that software designed to make lots of DNS queries would have some kind of
+&lt;a class="link" href="https://en.wikipedia.org/wiki/Exponential_backoff" target="_blank" rel="noopener"
+>back-off&lt;/a> algorithm but
+whatever was making these requests clearly did not. The next thing I did was
+sort by time and just scroll through all the packets. Eventually, I noticed
+packet &lt;code>3969&lt;/code>:
+&lt;img src="https://bmhstsa.com/post/wireshark-2/wireshark-dns-2.png" alt="Wireshark packet 3969 screenshot" />&lt;/p>
+&lt;p>If you&amp;rsquo;re a web developer, you may recognize the 2 trailing equal-signs as the
+padding used by &lt;a class="link" href="https://en.wikipedia.org/wiki/Base64" target="_blank" rel="noopener"
+>base 64&lt;/a>. At this point,
+it seemed quite obvious to me that in order to solve the challenge, I&amp;rsquo;d have to
+combine all the invalid DNS queries together and decode it. In order to extract
+all the queries, I used &lt;a class="link" href="https://www.wireshark.org/docs/man-pages/tshark.html" target="_blank" rel="noopener"
+>T-Shark&lt;/a>
+and the filter &lt;code>dns.qry.name matches &amp;quot;.*\.reddshrimpandherring\.com$&amp;quot; &amp;amp;&amp;amp; ip.src == 18.217.1.57&lt;/code>
+(You can use this filter in the GUI too). The command to dump all the DNS
+queries I used is:&lt;/p>
+&lt;div class="highlight">&lt;pre class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="c1"># Bash&lt;/span>
+tshark -r ./shark2.pcapng -Y &lt;span class="s1">&amp;#39;dns.qry.name matches &amp;#34;.*\.reddshrimpandherring\.com$&amp;#34; &amp;amp;&amp;amp; ip.src == 18.217.1.57&amp;#39;&lt;/span> -T fields -e dns.qry.name &lt;span class="p">|&lt;/span> uniq &amp;gt; dns.txt
+&lt;span class="c1"># Powershell&lt;/span>
+tshark -r ./shark2.pcapng -Y &lt;span class="s1">&amp;#39;dns.qry.name matches &amp;#34;.*\.reddshrimpandherring\.com$&amp;#34; &amp;amp;&amp;amp; ip.src == 18.217.1.57&amp;#39;&lt;/span> -T fields -e dns.qry.name &lt;span class="p">|&lt;/span> Get-Unique &amp;gt; dns.txt
+&lt;/code>&lt;/pre>&lt;/div>&lt;h2 id="processing-the-queries">Processing the queries&lt;/h2>
+&lt;p>Now that we have a file (&lt;code>dns.txt&lt;/code>) filled with unique DNS requests, we need
+to combine the subdomains and parse the base 64. To do this, I used the below
+JS script:&lt;/p>
+&lt;div class="highlight">&lt;pre class="chroma">&lt;code class="language-javascript" data-lang="javascript">&lt;span class="c1">//Imports
+&lt;/span>&lt;span class="c1">&lt;/span>&lt;span class="kr">const&lt;/span> &lt;span class="p">{&lt;/span>&lt;span class="nx">readFileSync&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="nx">writeFileSync&lt;/span>&lt;span class="p">}&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="nx">require&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="s1">&amp;#39;fs&amp;#39;&lt;/span>&lt;span class="p">);&lt;/span>
+&lt;span class="c1">//Read the file
+&lt;/span>&lt;span class="c1">&lt;/span>&lt;span class="kr">const&lt;/span> &lt;span class="nx">raw&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="nx">readFileSync&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="s1">&amp;#39;./dns.txt&amp;#39;&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="s1">&amp;#39;utf-8&amp;#39;&lt;/span>&lt;span class="p">);&lt;/span>
+&lt;span class="c1">//Split each line
+&lt;/span>&lt;span class="c1">&lt;/span>&lt;span class="kr">const&lt;/span> &lt;span class="nx">lines&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="nx">raw&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="nx">split&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="s1">&amp;#39;\n&amp;#39;&lt;/span>&lt;span class="p">).&lt;/span>&lt;span class="nx">filter&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="nx">line&lt;/span> &lt;span class="p">=&amp;gt;&lt;/span> &lt;span class="nx">line&lt;/span> &lt;span class="o">!=&lt;/span> &lt;span class="s1">&amp;#39;&amp;#39;&lt;/span>&lt;span class="p">);&lt;/span>
+&lt;span class="c1">//Combine
+&lt;/span>&lt;span class="c1">&lt;/span>&lt;span class="kd">let&lt;/span> &lt;span class="nx">base64&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="s1">&amp;#39;&amp;#39;&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;span class="k">for&lt;/span> &lt;span class="p">(&lt;/span>&lt;span class="kr">const&lt;/span> &lt;span class="nx">line&lt;/span> &lt;span class="k">of&lt;/span> &lt;span class="nx">lines&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;span class="p">{&lt;/span>
+&lt;span class="c1">//Extract the subdomain
+&lt;/span>&lt;span class="c1">&lt;/span> &lt;span class="kr">const&lt;/span> &lt;span class="nx">subdomain&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="sr">/([^.]+)/&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="nx">exec&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="nx">line&lt;/span>&lt;span class="p">);&lt;/span>
+&lt;span class="c1">//Append the subdomain
+&lt;/span>&lt;span class="c1">&lt;/span> &lt;span class="k">if&lt;/span> &lt;span class="p">(&lt;/span>&lt;span class="nx">subdomain&lt;/span> &lt;span class="o">!=&lt;/span> &lt;span class="kc">null&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;span class="p">{&lt;/span>
+&lt;span class="nx">base64&lt;/span> &lt;span class="o">+=&lt;/span> &lt;span class="nx">subdomain&lt;/span>&lt;span class="p">[&lt;/span>&lt;span class="mi">0&lt;/span>&lt;span class="p">];&lt;/span>
+&lt;span class="p">}&lt;/span>
+&lt;span class="p">}&lt;/span>
+&lt;span class="c1">//Interpret the base 64
+&lt;/span>&lt;span class="c1">&lt;/span>&lt;span class="kr">const&lt;/span> &lt;span class="nx">data&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="nx">Buffer&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="nx">from&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="nx">base64&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="s1">&amp;#39;base64&amp;#39;&lt;/span>&lt;span class="p">);&lt;/span>
+&lt;span class="c1">//Log
+&lt;/span>&lt;span class="c1">&lt;/span>&lt;span class="nx">console&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="nx">log&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="nx">data&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="nx">toString&lt;/span>&lt;span class="p">());&lt;/span>
+&lt;/code>&lt;/pre>&lt;/div>&lt;p>&lt;em>Note: this script assumes your file uses Linux-style new-lines. If you&amp;rsquo;re not,
+be sure to update line 8 from &lt;code>'\n'&lt;/code> to whatever new-line-characters you&amp;rsquo;re using.&lt;/em>&lt;/p>
+&lt;p>If you run this, it should write the flag to the console.&lt;/p></description></item><item><title>Wireshark Doo Dooo Do Doo</title><link>https://bmhstsa.com/post/wireshark-doo-dooo-do-doo/</link><pubDate>Fri, 09 Apr 2021 15:48:38 -0600</pubDate><guid>https://bmhstsa.com/post/wireshark-doo-dooo-do-doo/</guid><description>&lt;h3 id="challenge-rating">Challenge Rating&lt;/h3>
 &lt;ul>
 &lt;li>Artificialness: &lt;code>7/10&lt;/code>&lt;/li>
 &lt;li>Skill: &lt;code>4/10&lt;/code>&lt;/li>
