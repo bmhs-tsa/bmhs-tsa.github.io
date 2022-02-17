@@ -1,40 +1,136 @@
-<!doctype html><html lang=en-us><head><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1"><meta name=description content="picoCTF writeup by loogalicious and Wakeful Cloud"><title>Wireshark 2</title><link rel=canonical href=https://bmhstsa.com/post/wireshark-2/><link rel=stylesheet href=/scss/style.min.css><meta property="og:title" content="Wireshark 2"><meta property="og:description" content="picoCTF writeup by loogalicious and Wakeful Cloud"><meta property="og:url" content="https://bmhstsa.com/post/wireshark-2/"><meta property="og:site_name" content="BMHS TSA"><meta property="og:type" content="article"><meta property="article:section" content="Post"><meta property="article:tag" content="Forensics"><meta property="article:tag" content="loogalicious"><meta property="article:tag" content="Wakeful Cloud"><meta property="article:published_time" content="2021-04-09T15:58:15-06:00"><meta property="article:modified_time" content="2021-04-09T15:58:15-06:00"><meta name=twitter:title content="Wireshark 2"><meta name=twitter:description content="picoCTF writeup by loogalicious and Wakeful Cloud"><script type=application/javascript>var doNotTrack=!1;doNotTrack||(window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)},ga.l=+new Date,ga('create','UA-193505887-1','auto'),ga('send','pageview'))</script><script async src=https://www.google-analytics.com/analytics.js></script></head><body><script>(function(){const a='StackColorScheme';localStorage.getItem(a)||localStorage.setItem(a,"auto")})()</script><script>(function(){const b='StackColorScheme',a=localStorage.getItem(b),c=window.matchMedia('(prefers-color-scheme: dark)').matches===!0;a=='dark'||a==='auto'&&c?document.body.dataset.scheme='dark':document.body.dataset.scheme='light'})()</script><div class="container main-container flex on-phone--column extended article-page with-toolbar"><aside class="sidebar left-sidebar sticky"><button class="hamburger hamburger--spin" type=button id=toggle-menu aria-label="Toggle Menu">
-<span class=hamburger-box><span class=hamburger-inner></span></span></button><header class=site-info><figure class=site-avatar><img src=/images/avatar.png width=300 height=300 class=site-logo loading=lazy alt=Avatar></figure><h1 class=site-name><a href=https://bmhstsa.com/>BMHS TSA</a></h1><h2 class=site-description>Battle Mountain High School Technology Student Association</h2></header><ol class=menu id=main-menu><li><a href=/><svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-home" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><polyline points="5 12 3 12 12 3 21 12 19 12"/><path d="M5 12v7a2 2 0 002 2h10a2 2 0 002-2v-7"/><path d="M9 21v-6a2 2 0 012-2h2a2 2 0 012 2v6"/></svg><span>Home</span></a></li><li><a href=/about/><svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-user" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><circle cx="12" cy="7" r="4"/><path d="M6 21v-2a4 4 0 014-4h4a4 4 0 014 4v2"/></svg><span>About</span></a></li><li><a href=/archives/><svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-archive" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><rect x="3" y="4" width="18" height="4" rx="2"/><path d="M5 8v10a2 2 0 002 2h10a2 2 0 002-2V8"/><line x1="10" y1="12" x2="14" y2="12"/></svg><span>Archives</span></a></li><li><a href=/search/><svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-search" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><circle cx="10" cy="10" r="7"/><line x1="21" y1="21" x2="15" y2="15"/></svg><span>Search</span></a></li><li id=dark-mode-toggle><svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><circle cx="8" cy="12" r="2"/><rect x="2" y="6" width="20" height="12" rx="6"/></svg><svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-right" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><circle cx="16" cy="12" r="2"/><rect x="2" y="6" width="20" height="12" rx="6"/></svg><span>Dark Mode</span></li></ol></aside><main class="main full-width"><div id=article-toolbar><a href=https://bmhstsa.com/ class=back-home><svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-chevron-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><polyline points="15 6 9 12 15 18"/></svg><span>Back</span></a></div><article class=main-article><header class=article-header><div class=article-details><header class=article-category><a href=/categories/picoctf/>picoCTF</a></header><h2 class=article-title><a href=/post/wireshark-2/>Wireshark 2</a></h2><h3 class=article-subtitle>picoCTF writeup by loogalicious and Wakeful Cloud</h3><footer class=article-time><svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><circle cx="12" cy="12" r="9"/><polyline points="12 7 12 12 15 15"/></svg><time class=article-time--published>Apr 09, 2021</time></footer></div></header><section class=article-content><h3 id=challenge-rating>Challenge Rating</h3><ul><li>Artificialness: <code>7/10</code></li><li>Skill: <code>5/10</code></li><li>Time: <code>3 hours</code></li></ul><p><em>Learn more about how we rate challenges <a class=link href=/post/rating>here</a>.</em></p><p>This is another Wireshark challenge, expanding on the <a class=link href=/post/wireshark-1>first challenge</a>.
-Wireshark is a piece of software used to monitor network traffic.</p><h2 id=initial-analysis>Initial analysis</h2><p>Starting off I (<a class=link href=https://github.com/loogalicious target=_blank rel=noopener>loogalicious</a>) opened the
+<!doctype html><html lang=en-us>
+<head><meta charset=utf-8>
+<meta name=viewport content="width=device-width,initial-scale=1"><meta name=description content="picoCTF writeup by loogalicious and Wakeful Cloud"><title>Wireshark 2</title>
+<link rel=canonical href=https://bmhstsa.com/post/wireshark-2/>
+<link rel=stylesheet href=/scss/style.min.css><meta property="og:title" content="Wireshark 2">
+<meta property="og:description" content="picoCTF writeup by loogalicious and Wakeful Cloud">
+<meta property="og:url" content="https://bmhstsa.com/post/wireshark-2/">
+<meta property="og:site_name" content="BMHS TSA">
+<meta property="og:type" content="article"><meta property="article:section" content="Post"><meta property="article:tag" content="Forensics"><meta property="article:tag" content="loogalicious"><meta property="article:tag" content="Wakeful Cloud"><meta property="article:published_time" content="2021-04-09T15:58:15-06:00"><meta property="article:modified_time" content="2021-04-09T15:58:15-06:00">
+<meta name=twitter:title content="Wireshark 2">
+<meta name=twitter:description content="picoCTF writeup by loogalicious and Wakeful Cloud">
+<script type=application/javascript>var doNotTrack=!1;doNotTrack||(window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)},ga.l=+new Date,ga('create','UA-193505887-1','auto'),ga('send','pageview'))</script>
+<script async src=https://www.google-analytics.com/analytics.js></script>
+</head>
+<body>
+<script>(function(){const a='StackColorScheme';localStorage.getItem(a)||localStorage.setItem(a,"auto")})()</script><script>(function(){const b='StackColorScheme',a=localStorage.getItem(b),c=window.matchMedia('(prefers-color-scheme: dark)').matches===!0;a=='dark'||a==='auto'&&c?document.body.dataset.scheme='dark':document.body.dataset.scheme='light'})()</script><div class="container main-container flex on-phone--column extended article-page with-toolbar">
+<aside class="sidebar left-sidebar sticky">
+<button class="hamburger hamburger--spin" type=button id=toggle-menu aria-label="Toggle Menu">
+<span class=hamburger-box>
+<span class=hamburger-inner></span>
+</span>
+</button>
+<header class=site-info>
+<figure class=site-avatar>
+<img src=/images/avatar.png width=300 height=300 class=site-logo loading=lazy alt=Avatar>
+</figure>
+<h1 class=site-name><a href=https://bmhstsa.com/>BMHS TSA</a></h1>
+<h2 class=site-description>Battle Mountain High School Technology Student Association</h2>
+</header>
+<ol class=menu id=main-menu>
+<li>
+<a href=/><svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-home" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><polyline points="5 12 3 12 12 3 21 12 19 12"/><path d="M5 12v7a2 2 0 002 2h10a2 2 0 002-2v-7"/><path d="M9 21v-6a2 2 0 012-2h2a2 2 0 012 2v6"/></svg>
+<span>Home</span>
+</a>
+</li>
+<li>
+<a href=/about/><svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-user" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><circle cx="12" cy="7" r="4"/><path d="M6 21v-2a4 4 0 014-4h4a4 4 0 014 4v2"/></svg>
+<span>About</span>
+</a>
+</li>
+<li>
+<a href=/archives/><svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-archive" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><rect x="3" y="4" width="18" height="4" rx="2"/><path d="M5 8v10a2 2 0 002 2h10a2 2 0 002-2V8"/><line x1="10" y1="12" x2="14" y2="12"/></svg>
+<span>Archives</span>
+</a>
+</li>
+<li>
+<a href=/search/><svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-search" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><circle cx="10" cy="10" r="7"/><line x1="21" y1="21" x2="15" y2="15"/></svg>
+<span>Search</span>
+</a>
+</li>
+<li id=dark-mode-toggle><svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><circle cx="8" cy="12" r="2"/><rect x="2" y="6" width="20" height="12" rx="6"/></svg><svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-right" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><circle cx="16" cy="12" r="2"/><rect x="2" y="6" width="20" height="12" rx="6"/></svg>
+<span>Dark Mode</span>
+</li>
+</ol>
+</aside>
+<main class="main full-width">
+<div id=article-toolbar>
+<a href=https://bmhstsa.com/ class=back-home><svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-chevron-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><polyline points="15 6 9 12 15 18"/></svg>
+<span>Back</span>
+</a>
+</div>
+<article class=main-article>
+<header class=article-header>
+<div class=article-details>
+<header class=article-category>
+<a href=/categories/picoctf/>
+picoCTF
+</a>
+</header>
+<h2 class=article-title>
+<a href=/post/wireshark-2/>Wireshark 2</a>
+</h2>
+<h3 class=article-subtitle>
+picoCTF writeup by loogalicious and Wakeful Cloud
+</h3>
+<footer class=article-time><svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><circle cx="12" cy="12" r="9"/><polyline points="12 7 12 12 15 15"/></svg>
+<time class=article-time--published>Apr 09, 2021</time>
+</footer></div>
+</header>
+<section class=article-content>
+<h3 id=challenge-rating>Challenge Rating</h3>
+<ul>
+<li>Artificialness: <code>7/10</code></li>
+<li>Skill: <code>5/10</code></li>
+<li>Time: <code>3 hours</code></li>
+</ul>
+<p><em>Learn more about how we rate challenges <a class=link href=/post/rating>here</a>.</em></p>
+<p>This is another Wireshark challenge, expanding on the <a class=link href=/post/wireshark-1>first challenge</a>.
+Wireshark is a piece of software used to monitor network traffic.</p>
+<h2 id=initial-analysis>Initial analysis</h2>
+<p>Starting off I (<a class=link href=https://github.com/loogalicious target=_blank rel=noopener>loogalicious</a>) opened the
 file in Wireshark. After browsing through it, I noticed 90 or so flags in
 the responses from <code>http://18.217.1.57/flag</code> and the AWS EC2 token in packet
 <code>4344</code> caught my eye:
-<img src=/post/wireshark-2/wireshark-token.png alt="Wireshark token screenshot"></p><p>After <a class=link href=https://github.com/wakeful-cloud target=_blank rel=noopener>Wakeful-Cloud</a> and I made a script to
+<img src=/post/wireshark-2/wireshark-token.png alt="Wireshark token screenshot"></p>
+<p>After <a class=link href=https://github.com/wakeful-cloud target=_blank rel=noopener>Wakeful-Cloud</a> and I made a script to
 extract all of the flags, I realized they were red herrings. Then I found the
 DNS queries to <code>*.reddshrimpandherring.com</code> and looked through the given website but
 found nothing. This is the point when Wakeful-Cloud switched from helping me to
-actually working to solve the challenge.</p><h2 id=dns-queries>DNS queries</h2><p>The first thing I (Wakeful-Cloud) did towards solving this challenge was to sort
+actually working to solve the challenge.</p>
+<h2 id=dns-queries>DNS queries</h2>
+<p>The first thing I (Wakeful-Cloud) did towards solving this challenge was to sort
 by packet protocol and just familiarize myself with the capture. This also helps
 to weed out any <em>noise</em> that may have been generated (Since the <em>noise</em> is often
 generated from a different application/protocol). There were a few odd things
 that I noticed such as an enormous amount of <strong>invalid</strong> DNS queries to
 <code>*.reddshrimpandherring.com</code>:
-<img src=/post/wireshark-2/wireshark-dns-1.png alt="Wireshark DNS screenshot"></p><p>What really bothered me is why there were so many invalid queries. I&rsquo;d expect
+<img src=/post/wireshark-2/wireshark-dns-1.png alt="Wireshark DNS screenshot"></p>
+<p>What really bothered me is why there were so many invalid queries. I&rsquo;d expect
 that software designed to make lots of DNS queries would have some kind of
 <a class=link href=https://en.wikipedia.org/wiki/Exponential_backoff target=_blank rel=noopener>back-off</a> algorithm but
 whatever was making these requests clearly did not. The next thing I did was
 sort by time and just scroll through all the packets. Eventually, I noticed
 packet <code>3969</code>:
-<img src=/post/wireshark-2/wireshark-dns-2.png alt="Wireshark packet 3969 screenshot"></p><p>If you&rsquo;re a web developer, you may recognize the 2 trailing equal-signs as the
+<img src=/post/wireshark-2/wireshark-dns-2.png alt="Wireshark packet 3969 screenshot"></p>
+<p>If you&rsquo;re a web developer, you may recognize the 2 trailing equal-signs as the
 padding used by <a class=link href=https://en.wikipedia.org/wiki/Base64 target=_blank rel=noopener>base 64</a>. At this point,
 it seemed quite obvious to me that in order to solve the challenge, I&rsquo;d have to
 combine all the invalid DNS queries together and decode it. In order to extract
 all the queries, I used <a class=link href=https://www.wireshark.org/docs/man-pages/tshark.html target=_blank rel=noopener>T-Shark</a>
 and the filter <code>dns.qry.name matches ".*\.reddshrimpandherring\.com$" && ip.src == 18.217.1.57</code>
 (You can use this filter in the GUI too). The command to dump all the DNS
-queries I used is:</p><div class=highlight><pre class=chroma><code class=language-bash data-lang=bash><span class=c1># Bash</span>
+queries I used is:</p>
+<div class=highlight><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=c1># Bash</span>
 tshark -r ./shark2.pcapng -Y <span class=s1>&#39;dns.qry.name matches  &#34;.*\.reddshrimpandherring\.com$&#34; &amp;&amp; ip.src == 18.217.1.57&#39;</span> -T fields -e dns.qry.name <span class=p>|</span> uniq &gt; dns.txt
 
 <span class=c1># Powershell</span>
 tshark -r ./shark2.pcapng -Y <span class=s1>&#39;dns.qry.name matches  &#34;.*\.reddshrimpandherring\.com$&#34; &amp;&amp; ip.src == 18.217.1.57&#39;</span> -T fields -e dns.qry.name <span class=p>|</span> Get-Unique &gt; dns.txt
-</code></pre></div><h2 id=processing-the-queries>Processing the queries</h2><p>Now that we have a file (<code>dns.txt</code>) filled with unique DNS requests, we need
+</code></pre></div><h2 id=processing-the-queries>Processing the queries</h2>
+<p>Now that we have a file (<code>dns.txt</code>) filled with unique DNS requests, we need
 to combine the subdomains and parse the base 64. To do this, I used the below
-JS script:</p><div class=highlight><pre class=chroma><code class=language-javascript data-lang=javascript><span class=c1>//Imports
+JS script:</p>
+<div class=highlight><pre tabindex=0 class=chroma><code class=language-javascript data-lang=javascript><span class=c1>//Imports
 </span><span class=c1></span><span class=kr>const</span> <span class=p>{</span><span class=nx>readFileSync</span><span class=p>,</span> <span class=nx>writeFileSync</span><span class=p>}</span> <span class=o>=</span> <span class=nx>require</span><span class=p>(</span><span class=s1>&#39;fs&#39;</span><span class=p>);</span>
 
 <span class=c1>//Read the file
@@ -63,12 +159,112 @@ JS script:</p><div class=highlight><pre class=chroma><code class=language-javasc
 <span class=c1>//Log
 </span><span class=c1></span><span class=nx>console</span><span class=p>.</span><span class=nx>log</span><span class=p>(</span><span class=nx>data</span><span class=p>.</span><span class=nx>toString</span><span class=p>());</span>
 </code></pre></div><p><em>Note: this script assumes your file uses Linux-style new-lines. If you&rsquo;re not,
-be sure to update line 8 from <code>'\n'</code> to whatever new-line-characters you&rsquo;re using.</em></p><p>If you run this, it should write the flag to the console.</p></section><footer class=article-footer><section class=article-tags><a href=/tags/forensics/>Forensics</a>
+be sure to update line 8 from <code>'\n'</code> to whatever new-line-characters you&rsquo;re using.</em></p>
+<p>If you run this, it should write the flag to the console.</p>
+</section>
+<footer class=article-footer>
+<section class=article-tags>
+<a href=/tags/forensics/>Forensics</a>
 <a href=/tags/loogalicious/>loogalicious</a>
-<a href=/tags/wakeful-cloud/>Wakeful Cloud</a></section><section class=article-copyright><svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-copyright" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><circle cx="12" cy="12" r="9"/><path d="M14.5 9a3.5 4 0 100 6"/></svg><span>Licensed under CC BY-NC-SA 4.0</span></section></footer></article><aside class=related-contents--wrapper><h2 class=section-title>Related contents</h2><div class=related-contents><div class="flex article-list--tile"><article><a href=/post/wireshark-doo-dooo-do-doo/><div class=article-details><h2 class=article-title>Wireshark Doo Dooo Do Doo</h2></div></a></article><article><a href=/post/static-aint-always-noise/><div class=article-details><h2 class=article-title>Static Aint Always Noise</h2></div></a></article><article><a href=/post/matryoshka-doll/><div class=article-details><h2 class=article-title>Matryoshka Doll</h2></div></a></article><article><a href=/post/x-marks-the-spot/><div class=article-details><h2 class=article-title>X Marks the Spot</h2></div></a></article><article><a href=/post/web-gauntlet-3/><div class=article-details><h2 class=article-title>Web Gauntlet 3</h2></div></a></article></div></div></aside><footer class=site-footer><section class=copyright>&copy;
+<a href=/tags/wakeful-cloud/>Wakeful Cloud</a>
+</section>
+<section class=article-copyright><svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-copyright" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><circle cx="12" cy="12" r="9"/><path d="M14.5 9a3.5 4 0 100 6"/></svg>
+<span>Licensed under CC BY-NC-SA 4.0</span>
+</section>
+</footer>
+</article>
+<aside class=related-contents--wrapper>
+<h2 class=section-title>Related contents</h2>
+<div class=related-contents>
+<div class="flex article-list--tile">
+<article>
+<a href=/post/wireshark-doo-dooo-do-doo/>
+<div class=article-details>
+<h2 class=article-title>Wireshark Doo Dooo Do Doo</h2>
+</div>
+</a>
+</article>
+<article>
+<a href=/post/static-aint-always-noise/>
+<div class=article-details>
+<h2 class=article-title>Static Aint Always Noise</h2>
+</div>
+</a>
+</article>
+<article>
+<a href=/post/matryoshka-doll/>
+<div class=article-details>
+<h2 class=article-title>Matryoshka Doll</h2>
+</div>
+</a>
+</article>
+<article>
+<a href=/post/x-marks-the-spot/>
+<div class=article-details>
+<h2 class=article-title>X Marks the Spot</h2>
+</div>
+</a>
+</article>
+<article>
+<a href=/post/web-gauntlet-3/>
+<div class=article-details>
+<h2 class=article-title>Web Gauntlet 3</h2>
+</div>
+</a>
+</article>
+</div>
+</div>
+</aside>
+<footer class=site-footer>
+<section class=copyright>
+&copy;
 2020 -
-2021 BMHS TSA</section><section class=powerby>Built with <a href=https://gohugo.io/ target=_blank rel=noopener>Hugo</a><br>Theme <b><a href=https://github.com/CaiJimmy/hugo-theme-stack target=_blank rel=noopener data-version=2.3.0>Stack</a></b> designed by <a href=https://jimmycai.com target=_blank rel=noopener>Jimmy</a></section></footer><div class=pswp tabindex=-1 role=dialog aria-hidden=true><div class=pswp__bg></div><div class=pswp__scroll-wrap><div class=pswp__container><div class=pswp__item></div><div class=pswp__item></div><div class=pswp__item></div></div><div class="pswp__ui pswp__ui--hidden"><div class=pswp__top-bar><div class=pswp__counter></div><button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+2022 BMHS TSA
+</section>
+<section class=powerby>
+Built with <a href=https://gohugo.io/ target=_blank rel=noopener>Hugo</a> <br>
+Theme <b><a href=https://github.com/CaiJimmy/hugo-theme-stack target=_blank rel=noopener data-version=2.3.0>Stack</a></b> designed by <a href=https://jimmycai.com target=_blank rel=noopener>Jimmy</a>
+</section>
+</footer>
+<div class=pswp tabindex=-1 role=dialog aria-hidden=true>
+<div class=pswp__bg></div>
+<div class=pswp__scroll-wrap>
+<div class=pswp__container>
+<div class=pswp__item></div>
+<div class=pswp__item></div>
+<div class=pswp__item></div>
+</div>
+<div class="pswp__ui pswp__ui--hidden">
+<div class=pswp__top-bar>
+<div class=pswp__counter></div>
+<button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
 <button class="pswp__button pswp__button--share" title=Share></button>
 <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
-<button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button><div class=pswp__preloader><div class=pswp__preloader__icn><div class=pswp__preloader__cut><div class=pswp__preloader__donut></div></div></div></div></div><div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap"><div class=pswp__share-tooltip></div></div><button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)"></button>
-<button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)"></button><div class=pswp__caption><div class=pswp__caption__center></div></div></div></div></div><script src=https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js integrity="sha256-ePwmChbbvXbsO02lbM3HoHbSHTHFAeChekF1xKJdleo=" crossorigin=anonymous defer></script><script src=https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js integrity="sha256-UKkzOn/w1mBxRmLLGrSeyB4e1xbrp4xylgAWb3M42pU=" crossorigin=anonymous defer></script><link rel=stylesheet href=https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.css integrity="sha256-c0uckgykQ9v5k+IqViZOZKc47Jn7KQil4/MP3ySA3F8=" crossorigin=anonymous><link rel=stylesheet href=https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.css integrity="sha256-SBLU4vv6CA6lHsZ1XyTdhyjJxCjPif/TRkjnsyGAGnE=" crossorigin=anonymous></main></div><script src=https://cdn.jsdelivr.net/npm/node-vibrant@3.1.5/dist/vibrant.min.js integrity="sha256-5NovOZc4iwiAWTYIFiIM7DxKUXKWvpVEuMEPLzcm5/g=" crossorigin=anonymous defer></script><script type=text/javascript src=/ts/main.js defer></script><script>(function(){const a=document.createElement('link');a.href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap",a.type="text/css",a.rel="stylesheet",document.head.appendChild(a)})()</script></body></html>
+<button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+<div class=pswp__preloader>
+<div class=pswp__preloader__icn>
+<div class=pswp__preloader__cut>
+<div class=pswp__preloader__donut></div>
+</div>
+</div>
+</div>
+</div>
+<div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+<div class=pswp__share-tooltip></div>
+</div>
+<button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+</button>
+<button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+</button>
+<div class=pswp__caption>
+<div class=pswp__caption__center></div>
+</div>
+</div>
+</div>
+</div><script src=https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js integrity="sha256-ePwmChbbvXbsO02lbM3HoHbSHTHFAeChekF1xKJdleo=" crossorigin=anonymous defer></script><script src=https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js integrity="sha256-UKkzOn/w1mBxRmLLGrSeyB4e1xbrp4xylgAWb3M42pU=" crossorigin=anonymous defer></script><link rel=stylesheet href=https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.css integrity="sha256-c0uckgykQ9v5k+IqViZOZKc47Jn7KQil4/MP3ySA3F8=" crossorigin=anonymous><link rel=stylesheet href=https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.css integrity="sha256-SBLU4vv6CA6lHsZ1XyTdhyjJxCjPif/TRkjnsyGAGnE=" crossorigin=anonymous>
+</main>
+</div>
+<script src=https://cdn.jsdelivr.net/npm/node-vibrant@3.1.5/dist/vibrant.min.js integrity="sha256-5NovOZc4iwiAWTYIFiIM7DxKUXKWvpVEuMEPLzcm5/g=" crossorigin=anonymous defer></script><script type=text/javascript src=/ts/main.js defer></script>
+<script>(function(){const a=document.createElement('link');a.href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap",a.type="text/css",a.rel="stylesheet",document.head.appendChild(a)})()</script>
+</body>
+</html>
