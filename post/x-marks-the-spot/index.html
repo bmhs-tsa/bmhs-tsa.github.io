@@ -1,315 +1,97 @@
-<!doctype html><html lang=en-us>
-<head><meta charset=utf-8>
-<meta name=viewport content="width=device-width,initial-scale=1"><meta name=description content="picoCTF writeup by Wakeful Cloud"><title>X Marks the Spot</title>
-<link rel=canonical href=https://bmhstsa.com/post/x-marks-the-spot/>
-<link rel=stylesheet href=/scss/style.min.css><meta property="og:title" content="X Marks the Spot">
-<meta property="og:description" content="picoCTF writeup by Wakeful Cloud">
-<meta property="og:url" content="https://bmhstsa.com/post/x-marks-the-spot/">
-<meta property="og:site_name" content="BMHS TSA">
-<meta property="og:type" content="article"><meta property="article:section" content="Post"><meta property="article:tag" content="Web Exploitation"><meta property="article:tag" content="Injection Vulnerability"><meta property="article:tag" content="Wakeful Cloud"><meta property="article:published_time" content="2021-04-02T23:39:19-06:00"><meta property="article:modified_time" content="2021-04-02T23:39:19-06:00">
-<meta name=twitter:title content="X Marks the Spot">
-<meta name=twitter:description content="picoCTF writeup by Wakeful Cloud">
-<script type=application/javascript>var doNotTrack=!1;doNotTrack||(window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)},ga.l=+new Date,ga('create','UA-193505887-1','auto'),ga('send','pageview'))</script>
-<script async src=https://www.google-analytics.com/analytics.js></script>
-</head>
-<body>
-<script>(function(){const a='StackColorScheme';localStorage.getItem(a)||localStorage.setItem(a,"auto")})()</script><script>(function(){const b='StackColorScheme',a=localStorage.getItem(b),c=window.matchMedia('(prefers-color-scheme: dark)').matches===!0;a=='dark'||a==='auto'&&c?document.body.dataset.scheme='dark':document.body.dataset.scheme='light'})()</script><div class="container main-container flex on-phone--column extended article-page with-toolbar">
-<aside class="sidebar left-sidebar sticky">
-<button class="hamburger hamburger--spin" type=button id=toggle-menu aria-label="Toggle Menu">
-<span class=hamburger-box>
-<span class=hamburger-inner></span>
-</span>
-</button>
-<header class=site-info>
-<figure class=site-avatar>
-<img src=/images/avatar.png width=300 height=300 class=site-logo loading=lazy alt=Avatar>
-</figure>
-<h1 class=site-name><a href=https://bmhstsa.com/>BMHS TSA</a></h1>
-<h2 class=site-description>Battle Mountain High School Technology Student Association</h2>
-</header>
-<ol class=menu id=main-menu>
-<li>
-<a href=/><svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-home" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><polyline points="5 12 3 12 12 3 21 12 19 12"/><path d="M5 12v7a2 2 0 002 2h10a2 2 0 002-2v-7"/><path d="M9 21v-6a2 2 0 012-2h2a2 2 0 012 2v6"/></svg>
-<span>Home</span>
-</a>
-</li>
-<li>
-<a href=/about/><svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-user" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><circle cx="12" cy="7" r="4"/><path d="M6 21v-2a4 4 0 014-4h4a4 4 0 014 4v2"/></svg>
-<span>About</span>
-</a>
-</li>
-<li>
-<a href=/archives/><svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-archive" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><rect x="3" y="4" width="18" height="4" rx="2"/><path d="M5 8v10a2 2 0 002 2h10a2 2 0 002-2V8"/><line x1="10" y1="12" x2="14" y2="12"/></svg>
-<span>Archives</span>
-</a>
-</li>
-<li>
-<a href=/search/><svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-search" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><circle cx="10" cy="10" r="7"/><line x1="21" y1="21" x2="15" y2="15"/></svg>
-<span>Search</span>
-</a>
-</li>
-<li id=dark-mode-toggle><svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><circle cx="8" cy="12" r="2"/><rect x="2" y="6" width="20" height="12" rx="6"/></svg><svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-right" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><circle cx="16" cy="12" r="2"/><rect x="2" y="6" width="20" height="12" rx="6"/></svg>
-<span>Dark Mode</span>
-</li>
-</ol>
-</aside>
-<main class="main full-width">
-<div id=article-toolbar>
-<a href=https://bmhstsa.com/ class=back-home><svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-chevron-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><polyline points="15 6 9 12 15 18"/></svg>
-<span>Back</span>
-</a>
-</div>
-<article class=main-article>
-<header class=article-header>
-<div class=article-details>
-<header class=article-category>
-<a href=/categories/picoctf/>
-picoCTF
-</a>
-</header>
-<h2 class=article-title>
-<a href=/post/x-marks-the-spot/>X Marks the Spot</a>
-</h2>
-<h3 class=article-subtitle>
-picoCTF writeup by Wakeful Cloud
-</h3>
-<footer class=article-time><svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><circle cx="12" cy="12" r="9"/><polyline points="12 7 12 12 15 15"/></svg>
-<time class=article-time--published>Apr 02, 2021</time>
-</footer></div>
-</header>
-<section class=article-content>
-<h3 id=challenge-rating>Challenge Rating</h3>
-<ul>
-<li>Artificialness: <code>3/10</code></li>
-<li>Skill: <code>7/10</code></li>
-<li>Time: <code>4-6 hours</code></li>
-</ul>
-<p><em>Learn more about how we rate challenges <a class=link href=/post/rating>here</a>.</em></p>
-<h2 id=preface>Preface</h2>
-<p>This write-up assumes you understand what an injection vulnerability is. If you
-don&rsquo;t you, should check out <a class=link href=/post/web-gauntlet-2>Web Gauntlet 2</a>.</p>
-<h2 id=what-is-xpath>What is XPath?</h2>
-<p><a class=link href=https://en.wikipedia.org/wiki/XPath target=_blank rel=noopener>XPath</a> is the standard way of querying
+<!doctype html><html lang=en-us><head><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1"><meta name=description content="picoCTF writeup by Wakeful Cloud"><title>X Marks the Spot</title><link rel=canonical href=https://bmhs-tsa.github.io/post/x-marks-the-spot/><link rel=stylesheet href=/scss/style.min.css><meta property="og:title" content="X Marks the Spot"><meta property="og:description" content="picoCTF writeup by Wakeful Cloud"><meta property="og:url" content="https://bmhs-tsa.github.io/post/x-marks-the-spot/"><meta property="og:site_name" content="BMHS TSA"><meta property="og:type" content="article"><meta property="article:section" content="Post"><meta property="article:tag" content="Web Exploitation"><meta property="article:tag" content="Injection Vulnerability"><meta property="article:tag" content="Wakeful Cloud"><meta property="article:published_time" content="2021-04-02T23:39:19-06:00"><meta property="article:modified_time" content="2021-04-02T23:39:19-06:00"><meta name=twitter:title content="X Marks the Spot"><meta name=twitter:description content="picoCTF writeup by Wakeful Cloud"><script type=application/javascript>var doNotTrack=!1;doNotTrack||(window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)},ga.l=+new Date,ga("create","UA-193505887-1","auto"),ga("send","pageview"))</script><script async src=https://www.google-analytics.com/analytics.js></script></head><body><script>(function(){const e="StackColorScheme";localStorage.getItem(e)||localStorage.setItem(e,"auto")})()</script><script>(function(){const t="StackColorScheme",e=localStorage.getItem(t),n=window.matchMedia("(prefers-color-scheme: dark)").matches===!0;e=="dark"||e==="auto"&&n?document.body.dataset.scheme="dark":document.body.dataset.scheme="light"})()</script><div class="container main-container flex on-phone--column extended article-page with-toolbar"><aside class="sidebar left-sidebar sticky"><button class="hamburger hamburger--spin" type=button id=toggle-menu aria-label="Toggle Menu">
+<span class=hamburger-box><span class=hamburger-inner></span></span></button><header class=site-info><figure class=site-avatar><img src=/images/avatar.png width=300 height=300 class=site-logo loading=lazy alt=Avatar></figure><h1 class=site-name><a href=https://bmhs-tsa.github.io/>BMHS TSA</a></h1><h2 class=site-description>Battle Mountain High School Technology Student Association</h2></header><ol class=menu id=main-menu><li><a href=/><svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-home" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><polyline points="5 12 3 12 12 3 21 12 19 12"/><path d="M5 12v7a2 2 0 002 2h10a2 2 0 002-2v-7"/><path d="M9 21v-6a2 2 0 012-2h2a2 2 0 012 2v6"/></svg><span>Home</span></a></li><li><a href=/about/><svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-user" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><circle cx="12" cy="7" r="4"/><path d="M6 21v-2a4 4 0 014-4h4a4 4 0 014 4v2"/></svg><span>About</span></a></li><li><a href=/archives/><svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-archive" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><rect x="3" y="4" width="18" height="4" rx="2"/><path d="M5 8v10a2 2 0 002 2h10a2 2 0 002-2V8"/><line x1="10" y1="12" x2="14" y2="12"/></svg><span>Archives</span></a></li><li><a href=/search/><svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-search" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><circle cx="10" cy="10" r="7"/><line x1="21" y1="21" x2="15" y2="15"/></svg><span>Search</span></a></li><li id=dark-mode-toggle><svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><circle cx="8" cy="12" r="2"/><rect x="2" y="6" width="20" height="12" rx="6"/></svg><svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-right" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><circle cx="16" cy="12" r="2"/><rect x="2" y="6" width="20" height="12" rx="6"/></svg><span>Dark Mode</span></li></ol></aside><main class="main full-width"><div id=article-toolbar><a href=https://bmhs-tsa.github.io/ class=back-home><svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-chevron-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><polyline points="15 6 9 12 15 18"/></svg><span>Back</span></a></div><article class=main-article><header class=article-header><div class=article-details><header class=article-category><a href=/categories/picoctf-2021/>picoCTF 2021</a></header><h2 class=article-title><a href=/post/x-marks-the-spot/>X Marks the Spot</a></h2><h3 class=article-subtitle>picoCTF writeup by Wakeful Cloud</h3><footer class=article-time><svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><circle cx="12" cy="12" r="9"/><polyline points="12 7 12 12 15 15"/></svg><time class=article-time--published>Apr 02, 2021</time></footer></div></header><section class=article-content><h3 id=challenge-rating>Challenge Rating</h3><ul><li>Artificialness: <code>3/10</code></li><li>Skill: <code>7/10</code></li><li>Time: <code>4-6 hours</code></li></ul><p><em>Learn more about how we rate challenges <a class=link href=/post/rating>here</a>.</em></p><h2 id=preface>Preface</h2><p>This write-up assumes you understand what an injection vulnerability is. If you
+don&rsquo;t you, should check out <a class=link href=/post/web-gauntlet-2>Web Gauntlet 2</a>.</p><h2 id=what-is-xpath>What is XPath?</h2><p><a class=link href=https://en.wikipedia.org/wiki/XPath target=_blank rel=noopener>XPath</a> is the standard way of querying
 data from an XML document (Similar to SQL). There are a few basic things you
-need to know about XPath:</p>
-<ol>
-<li>Think of XPath queries like a file-path (<code>/</code> separated, items are written in
-a descending, hierarchical-order)</li>
-<li>A <code>/</code> represents the root element</li>
-<li>A <code>//</code> represents any element in any location</li>
-<li>You can extract an element&rsquo;s content with <code>{Element}/text()</code>
-(eg: <code>//user/name/text()</code> equals <code>guest</code>)</li>
-<li>You can get a string&rsquo;s length with <a class=link href=https://developer.mozilla.org/en-US/docs/Web/XPath/Functions/string-length target=_blank rel=noopener><code>string-length</code></a>
-(eg: <code>string-length('abc')</code> equals <code>3</code>)</li>
-<li>You can get a substring with <a class=link href=https://developer.mozilla.org/en-US/docs/Web/XPath/Functions/substring target=_blank rel=noopener><code>substring</code></a>
-(eg: <code>substring('abc', 2, 1)</code> equals <code>b</code>; note: <strong>XPath is one-indexed</strong>)</li>
-<li>You filter elements with <code>[{Condition}]</code>
-<ol>
-<li>You can filter by position with <code>[position() {Operator} {Number}]</code>
-(eg: <code>[position() = 2]</code>; note: <strong>XPath is one-indexed</strong>)</li>
-<li>You can filter by string-matches with <code>['A' = 'B']</code></li>
-<li>You can join different conditions together with <code>or</code> or <code>and</code></li>
-</ol>
-</li>
-</ol>
-<h2 id=solving-the-challenge>Solving the challenge</h2>
-<h3 id=probable-query>Probable Query</h3>
-<p>In order to develop an injection, it helps to have a query (Although it likely
+need to know about XPath:</p><ol><li>Think of XPath queries like a file-path (<code>/</code> separated, items are written in
+a descending, hierarchical-order)</li><li>A <code>/</code> represents the root element</li><li>A <code>//</code> represents any element in any location</li><li>You can extract an element&rsquo;s content with <code>{Element}/text()</code>
+(eg: <code>//user/name/text()</code> equals <code>guest</code>)</li><li>You can get a string&rsquo;s length with <a class=link href=https://developer.mozilla.org/en-US/docs/Web/XPath/Functions/string-length target=_blank rel=noopener><code>string-length</code></a>
+(eg: <code>string-length('abc')</code> equals <code>3</code>)</li><li>You can get a substring with <a class=link href=https://developer.mozilla.org/en-US/docs/Web/XPath/Functions/substring target=_blank rel=noopener><code>substring</code></a>
+(eg: <code>substring('abc', 2, 1)</code> equals <code>b</code>; note: <strong>XPath is one-indexed</strong>)</li><li>You filter elements with <code>[{Condition}]</code><ol><li>You can filter by position with <code>[position() {Operator} {Number}]</code>
+(eg: <code>[position() = 2]</code>; note: <strong>XPath is one-indexed</strong>)</li><li>You can filter by string-matches with <code>['A' = 'B']</code></li><li>You can join different conditions together with <code>or</code> or <code>and</code></li></ol></li></ol><h2 id=solving-the-challenge>Solving the challenge</h2><h3 id=probable-query>Probable Query</h3><p>In order to develop an injection, it helps to have a query (Although it likely
 won&rsquo;t be the same as the actual query picoCTF uses). To develop it, think about
 what conditions the server uses to find a user element: does the user&rsquo;s name equal
 a user-controlled valued and does the user&rsquo;s password equal another user-controlled
-value? The probable query I developed was:</p>
-<div class=highlight><pre tabindex=0 class=chroma><code class=language-css data-lang=css><span class=o>//</span><span class=nt>user</span><span class=o>[</span><span class=nt>name</span><span class=o>/</span><span class=nt>text</span><span class=o>()=</span><span class=s1>&#39;[USERNAME INPUT]&#39;</span> <span class=nt>and</span> <span class=nt>pass</span><span class=o>/</span><span class=nt>text</span><span class=o>()=</span><span class=s1>&#39;[PASSWORD INPUT]&#39;</span><span class=o>]</span>
-</code></pre></div><h3 id=developing-an-injection>Developing an injection</h3>
-<p>Now that we have a probably query, we can start messing around with single-quote
+value? The probable query I developed was:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-css data-lang=css><span class=line><span class=cl><span class=o>//</span><span class=nt>user</span><span class=o>[</span><span class=nt>name</span><span class=o>/</span><span class=nt>text</span><span class=o>()=</span><span class=s1>&#39;[USERNAME INPUT]&#39;</span> <span class=nt>and</span> <span class=nt>pass</span><span class=o>/</span><span class=nt>text</span><span class=o>()=</span><span class=s1>&#39;[PASSWORD INPUT]&#39;</span><span class=o>]</span>
+</span></span></code></pre></div><h3 id=developing-an-injection>Developing an injection</h3><p>Now that we have a probably query, we can start messing around with single-quote
 injection to try to escape the user-controlled strings. I found using <code>abc</code> as
 the username and <code>' or {CONDITION} and 'a'='a</code> as the password allows for us to
 run arbitrary boolean expressions on the server (Note that <code>You're on the right path.</code>
 indicates <code>true</code> while <code>Login failure.</code> indicates <code>false</code>). While this doesn&rsquo;t
-allow us to return strings, it&rsquo;s a start.</p>
-<h3 id=exfiltrating-data>Exfiltrating data</h3>
-<p>We know we can evaluate a boolean expression but how can we extract a string? The
+allow us to return strings, it&rsquo;s a start.</p><h3 id=exfiltrating-data>Exfiltrating data</h3><p>We know we can evaluate a boolean expression but how can we extract a string? The
 answer is by testing each character in a string until we get the correct
-character and with enough characters, the entire string.</p>
-<p>Initially it may seem like this a place where binary search would work well - we
+character and with enough characters, the entire string.</p><p>Initially it may seem like this a place where binary search would work well - we
 could possibly check if the nth character code is greater than the a certain
 number however the <a class=link href=https://www.oreilly.com/library/view/xslt-2nd-edition/9780596527211/re156.html target=_blank rel=noopener><code>fn:string-to-codepoints</code></a>
 function is disabled. Therefore, we will have to go through each character
 sequentially (Linear search). This is the part where this challenge gets very painful. The good news is that we can reasonably assume all characters are inside
 of the <a class=link href=https://flaviocopes.com/printable-ascii-characters/ target=_blank rel=noopener>printable ASCII range</a>
 (97 characters) which is far easier to guess than say <a class=link href=https://en.wikipedia.org/wiki/Unicode target=_blank rel=noopener>Unicode</a>
-(<a class=link href=https://www.unicode.org/versions/Unicode13.0.0/ target=_blank rel=noopener>143,859 characters</a>).</p>
-<p>To expedite this process, I developed a mini library for data extraction
+(<a class=link href=https://www.unicode.org/versions/Unicode13.0.0/ target=_blank rel=noopener>143,859 characters</a>).</p><p>To expedite this process, I developed a mini library for data extraction
 specifically for this challenge. You can view the source code
 <a class=link href=https://gist.github.com/Wakeful-Cloud/82f56b039d37d8db291fd12ea6de8f15 target=_blank rel=noopener>here</a>.
 This took a long time to extract because I followed multiple incorrect paths
 (Hence the flag&rsquo;s message); but I did find <a class=link href=https://cutt.ly/9xhyyyR target=_blank rel=noopener>this XML playground</a>
 to be extremely helpful for constructing XPath queries. Eventually, I was able
-to extract the below XML document (And the flag too):</p>
-<div class=highlight><pre tabindex=0 class=chroma><code class=language-xml data-lang=xml><span class=nt>&lt;db&gt;</span>
-  <span class=nt>&lt;poems&gt;</span>
-    <span class=nt>&lt;poem&gt;</span>
-      <span class=nt>&lt;author&gt;</span>Robert Frost<span class=nt>&lt;/author&gt;</span>
-      <span class=nt>&lt;title&gt;</span>The Road Not Taken<span class=nt>&lt;/title&gt;</span>
-      <span class=nt>&lt;text&gt;</span>[UNKNOWN]<span class=nt>&lt;/text&gt;</span>
-    <span class=nt>&lt;/poem&gt;</span>
-
-    <span class=nt>&lt;poem&gt;</span>
-      <span class=nt>&lt;author&gt;</span>William Carlos Williams<span class=nt>&lt;/author&gt;</span>
-      <span class=nt>&lt;title&gt;</span>The Red Wheelbarrow<span class=nt>&lt;/title&gt;</span>
-      <span class=nt>&lt;text&gt;</span>[UNKNOWN]<span class=nt>&lt;/text&gt;</span>
-    <span class=nt>&lt;/poem&gt;</span>
-
-    <span class=nt>&lt;poem&gt;</span>
-      <span class=nt>&lt;author&gt;</span>Pablo Neruda<span class=nt>&lt;/author&gt;</span>
-      <span class=nt>&lt;title&gt;</span>Oda a la papa<span class=nt>&lt;/title&gt;</span>
-      <span class=nt>&lt;text&gt;</span>[UNKNOWN]<span class=nt>&lt;/text&gt;</span>
-    <span class=nt>&lt;/poem&gt;</span>
-
-    <span class=nt>&lt;poem&gt;</span>
-      <span class=nt>&lt;author&gt;</span>Gwendolyn Brooks<span class=nt>&lt;/author&gt;</span>
-      <span class=nt>&lt;title&gt;</span>We Real Cool<span class=nt>&lt;/title&gt;</span>
-      <span class=nt>&lt;text&gt;</span>[UNKNOWN]<span class=nt>&lt;/text&gt;</span>
-    <span class=nt>&lt;/poem&gt;</span>
-
-    <span class=nt>&lt;poem&gt;</span>
-      <span class=nt>&lt;author&gt;</span>William Blake<span class=nt>&lt;/author&gt;</span>
-      <span class=nt>&lt;title&gt;</span>The Tyger<span class=nt>&lt;/title&gt;</span>
-      <span class=nt>&lt;text&gt;</span>[UNKNOWN]<span class=nt>&lt;/text&gt;</span>
-    <span class=nt>&lt;/poem&gt;</span>
-  <span class=nt>&lt;/poems&gt;</span>
-
-  <span class=nt>&lt;users&gt;</span>
-    <span class=nt>&lt;user&gt;</span>
-      <span class=nt>&lt;name&gt;</span>guest<span class=nt>&lt;/name&gt;</span>
-      <span class=nt>&lt;pass&gt;</span>thisisnottheflag<span class=nt>&lt;/pass&gt;</span>
-    <span class=nt>&lt;/user&gt;</span>
-
-    <span class=nt>&lt;user&gt;</span>
-      <span class=nt>&lt;name&gt;</span>bob<span class=nt>&lt;/name&gt;</span>
-      <span class=nt>&lt;pass&gt;</span>thisisnottheflageither<span class=nt>&lt;/pass&gt;</span>
-    <span class=nt>&lt;/user&gt;</span>
-
-    <span class=nt>&lt;user&gt;</span>
-      <span class=nt>&lt;name&gt;</span>admin<span class=nt>&lt;/name&gt;</span>
-      <span class=nt>&lt;pass&gt;</span>picoCTF{h0p3fully_u_t0ok_th3_r1ght_xp4th_f0505d9c}<span class=nt>&lt;/pass&gt;</span>
-    <span class=nt>&lt;/user&gt;</span>
-  <span class=nt>&lt;/users&gt;</span>
-<span class=nt>&lt;/db&gt;</span>
-</code></pre></div><p><em>Note: <code>[UNKNOWN]</code> represent strings that are very long and would take a long time to extract; you can probably make an educates guess though.</em></p>
-<h3 id=data-verification>Data verification</h3>
-<p>While extracting the data is very time-consuming and requires potentially
+to extract the below XML document (And the flag too):</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-xml data-lang=xml><span class=line><span class=cl><span class=nt>&lt;db&gt;</span>
+</span></span><span class=line><span class=cl>  <span class=nt>&lt;poems&gt;</span>
+</span></span><span class=line><span class=cl>    <span class=nt>&lt;poem&gt;</span>
+</span></span><span class=line><span class=cl>      <span class=nt>&lt;author&gt;</span>Robert Frost<span class=nt>&lt;/author&gt;</span>
+</span></span><span class=line><span class=cl>      <span class=nt>&lt;title&gt;</span>The Road Not Taken<span class=nt>&lt;/title&gt;</span>
+</span></span><span class=line><span class=cl>      <span class=nt>&lt;text&gt;</span>[UNKNOWN]<span class=nt>&lt;/text&gt;</span>
+</span></span><span class=line><span class=cl>    <span class=nt>&lt;/poem&gt;</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>    <span class=nt>&lt;poem&gt;</span>
+</span></span><span class=line><span class=cl>      <span class=nt>&lt;author&gt;</span>William Carlos Williams<span class=nt>&lt;/author&gt;</span>
+</span></span><span class=line><span class=cl>      <span class=nt>&lt;title&gt;</span>The Red Wheelbarrow<span class=nt>&lt;/title&gt;</span>
+</span></span><span class=line><span class=cl>      <span class=nt>&lt;text&gt;</span>[UNKNOWN]<span class=nt>&lt;/text&gt;</span>
+</span></span><span class=line><span class=cl>    <span class=nt>&lt;/poem&gt;</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>    <span class=nt>&lt;poem&gt;</span>
+</span></span><span class=line><span class=cl>      <span class=nt>&lt;author&gt;</span>Pablo Neruda<span class=nt>&lt;/author&gt;</span>
+</span></span><span class=line><span class=cl>      <span class=nt>&lt;title&gt;</span>Oda a la papa<span class=nt>&lt;/title&gt;</span>
+</span></span><span class=line><span class=cl>      <span class=nt>&lt;text&gt;</span>[UNKNOWN]<span class=nt>&lt;/text&gt;</span>
+</span></span><span class=line><span class=cl>    <span class=nt>&lt;/poem&gt;</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>    <span class=nt>&lt;poem&gt;</span>
+</span></span><span class=line><span class=cl>      <span class=nt>&lt;author&gt;</span>Gwendolyn Brooks<span class=nt>&lt;/author&gt;</span>
+</span></span><span class=line><span class=cl>      <span class=nt>&lt;title&gt;</span>We Real Cool<span class=nt>&lt;/title&gt;</span>
+</span></span><span class=line><span class=cl>      <span class=nt>&lt;text&gt;</span>[UNKNOWN]<span class=nt>&lt;/text&gt;</span>
+</span></span><span class=line><span class=cl>    <span class=nt>&lt;/poem&gt;</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>    <span class=nt>&lt;poem&gt;</span>
+</span></span><span class=line><span class=cl>      <span class=nt>&lt;author&gt;</span>William Blake<span class=nt>&lt;/author&gt;</span>
+</span></span><span class=line><span class=cl>      <span class=nt>&lt;title&gt;</span>The Tyger<span class=nt>&lt;/title&gt;</span>
+</span></span><span class=line><span class=cl>      <span class=nt>&lt;text&gt;</span>[UNKNOWN]<span class=nt>&lt;/text&gt;</span>
+</span></span><span class=line><span class=cl>    <span class=nt>&lt;/poem&gt;</span>
+</span></span><span class=line><span class=cl>  <span class=nt>&lt;/poems&gt;</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>  <span class=nt>&lt;users&gt;</span>
+</span></span><span class=line><span class=cl>    <span class=nt>&lt;user&gt;</span>
+</span></span><span class=line><span class=cl>      <span class=nt>&lt;name&gt;</span>guest<span class=nt>&lt;/name&gt;</span>
+</span></span><span class=line><span class=cl>      <span class=nt>&lt;pass&gt;</span>thisisnottheflag<span class=nt>&lt;/pass&gt;</span>
+</span></span><span class=line><span class=cl>    <span class=nt>&lt;/user&gt;</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>    <span class=nt>&lt;user&gt;</span>
+</span></span><span class=line><span class=cl>      <span class=nt>&lt;name&gt;</span>bob<span class=nt>&lt;/name&gt;</span>
+</span></span><span class=line><span class=cl>      <span class=nt>&lt;pass&gt;</span>thisisnottheflageither<span class=nt>&lt;/pass&gt;</span>
+</span></span><span class=line><span class=cl>    <span class=nt>&lt;/user&gt;</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>    <span class=nt>&lt;user&gt;</span>
+</span></span><span class=line><span class=cl>      <span class=nt>&lt;name&gt;</span>admin<span class=nt>&lt;/name&gt;</span>
+</span></span><span class=line><span class=cl>      <span class=nt>&lt;pass&gt;</span>picoCTF{h0p3fully_u_t0ok_th3_r1ght_xp4th_f0505d9c}<span class=nt>&lt;/pass&gt;</span>
+</span></span><span class=line><span class=cl>    <span class=nt>&lt;/user&gt;</span>
+</span></span><span class=line><span class=cl>  <span class=nt>&lt;/users&gt;</span>
+</span></span><span class=line><span class=cl><span class=nt>&lt;/db&gt;</span>
+</span></span></code></pre></div><p><em>Note: <code>[UNKNOWN]</code> represent strings that are very long and would take a long time to extract; you can probably make an educates guess though.</em></p><h3 id=data-verification>Data verification</h3><p>While extracting the data is very time-consuming and requires potentially
 thousands of HTTP requests, verifying the data is easy. For example, here&rsquo;s
 the login credentials to verify the flag (Which could change if you&rsquo;re reading
-this far in the future):</p>
-<ul>
-<li>Username: <code>abc</code></li>
-<li>Password: <code>' or /db/users/user[position()=3]/pass/text() = 'picoCTF{h0p3fully_u_t0ok_th3_r1ght_xp4th_f0505d9c}' and 'a'='a</code></li>
-</ul>
-</section>
-<footer class=article-footer>
-<section class=article-tags>
-<a href=/tags/web-exploitation/>Web Exploitation</a>
+this far in the future):</p><ul><li>Username: <code>abc</code></li><li>Password: <code>' or /db/users/user[position()=3]/pass/text() = 'picoCTF{h0p3fully_u_t0ok_th3_r1ght_xp4th_f0505d9c}' and 'a'='a</code></li></ul></section><footer class=article-footer><section class=article-tags><a href=/tags/web-exploitation/>Web Exploitation</a>
 <a href=/tags/injection-vulnerability/>Injection Vulnerability</a>
-<a href=/tags/wakeful-cloud/>Wakeful Cloud</a>
-</section>
-<section class=article-copyright><svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-copyright" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><circle cx="12" cy="12" r="9"/><path d="M14.5 9a3.5 4 0 100 6"/></svg>
-<span>Licensed under CC BY-NC-SA 4.0</span>
-</section>
-</footer>
-</article>
-<aside class=related-contents--wrapper>
-<h2 class=section-title>Related contents</h2>
-<div class=related-contents>
-<div class="flex article-list--tile">
-<article>
-<a href=/post/web-gauntlet-3/>
-<div class=article-details>
-<h2 class=article-title>Web Gauntlet 3</h2>
-</div>
-</a>
-</article>
-<article>
-<a href=/post/web-gauntlet-2/>
-<div class=article-details>
-<h2 class=article-title>Web Gauntlet 2</h2>
-</div>
-</a>
-</article>
-<article>
-<a href=/post/get-ahead/>
-<div class=article-details>
-<h2 class=article-title>Get Ahead</h2>
-</div>
-</a>
-</article>
-<article>
-<a href=/post/wireshark-2/>
-<div class=article-details>
-<h2 class=article-title>Wireshark 2</h2>
-</div>
-</a>
-</article>
-<article>
-<a href=/post/crackme-py/>
-<div class=article-details>
-<h2 class=article-title>crackme-py</h2>
-</div>
-</a>
-</article>
-</div>
-</div>
-</aside>
-<footer class=site-footer>
-<section class=copyright>
-&copy;
+<a href=/tags/wakeful-cloud/>Wakeful Cloud</a></section><section class=article-copyright><svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-copyright" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><circle cx="12" cy="12" r="9"/><path d="M14.5 9a3.5 4 0 100 6"/></svg><span>Licensed under CC BY-NC-SA 4.0</span></section></footer></article><aside class=related-contents--wrapper><h2 class=section-title>Related contents</h2><div class=related-contents><div class="flex article-list--tile"><article><a href=/post/web-gauntlet-3/><div class=article-details><h2 class=article-title>Web Gauntlet 3</h2></div></a></article><article><a href=/post/web-gauntlet-2/><div class=article-details><h2 class=article-title>Web Gauntlet 2</h2></div></a></article><article><a href=/post/get-ahead/><div class=article-details><h2 class=article-title>Get Ahead</h2></div></a></article><article><a href=/post/wireshark-2/><div class=article-details><h2 class=article-title>Wireshark 2</h2></div></a></article><article><a href=/post/noted/><div class=article-details><h2 class=article-title>Noted</h2></div></a></article></div></div></aside><footer class=site-footer><section class=copyright>&copy;
 2020 -
-2022 BMHS TSA
-</section>
-<section class=powerby>
-Built with <a href=https://gohugo.io/ target=_blank rel=noopener>Hugo</a> <br>
-Theme <b><a href=https://github.com/CaiJimmy/hugo-theme-stack target=_blank rel=noopener data-version=2.3.0>Stack</a></b> designed by <a href=https://jimmycai.com target=_blank rel=noopener>Jimmy</a>
-</section>
-</footer>
-<div class=pswp tabindex=-1 role=dialog aria-hidden=true>
-<div class=pswp__bg></div>
-<div class=pswp__scroll-wrap>
-<div class=pswp__container>
-<div class=pswp__item></div>
-<div class=pswp__item></div>
-<div class=pswp__item></div>
-</div>
-<div class="pswp__ui pswp__ui--hidden">
-<div class=pswp__top-bar>
-<div class=pswp__counter></div>
-<button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+2022 BMHS TSA</section><section class=powerby>Built with <a href=https://gohugo.io/ target=_blank rel=noopener>Hugo</a><br>Theme <b><a href=https://github.com/CaiJimmy/hugo-theme-stack target=_blank rel=noopener data-version=2.3.0>Stack</a></b> designed by <a href=https://jimmycai.com target=_blank rel=noopener>Jimmy</a></section></footer><div class=pswp tabindex=-1 role=dialog aria-hidden=true><div class=pswp__bg></div><div class=pswp__scroll-wrap><div class=pswp__container><div class=pswp__item></div><div class=pswp__item></div><div class=pswp__item></div></div><div class="pswp__ui pswp__ui--hidden"><div class=pswp__top-bar><div class=pswp__counter></div><button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
 <button class="pswp__button pswp__button--share" title=Share></button>
 <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
-<button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
-<div class=pswp__preloader>
-<div class=pswp__preloader__icn>
-<div class=pswp__preloader__cut>
-<div class=pswp__preloader__donut></div>
-</div>
-</div>
-</div>
-</div>
-<div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
-<div class=pswp__share-tooltip></div>
-</div>
-<button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
-</button>
-<button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
-</button>
-<div class=pswp__caption>
-<div class=pswp__caption__center></div>
-</div>
-</div>
-</div>
-</div><script src=https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js integrity="sha256-ePwmChbbvXbsO02lbM3HoHbSHTHFAeChekF1xKJdleo=" crossorigin=anonymous defer></script><script src=https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js integrity="sha256-UKkzOn/w1mBxRmLLGrSeyB4e1xbrp4xylgAWb3M42pU=" crossorigin=anonymous defer></script><link rel=stylesheet href=https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.css integrity="sha256-c0uckgykQ9v5k+IqViZOZKc47Jn7KQil4/MP3ySA3F8=" crossorigin=anonymous><link rel=stylesheet href=https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.css integrity="sha256-SBLU4vv6CA6lHsZ1XyTdhyjJxCjPif/TRkjnsyGAGnE=" crossorigin=anonymous>
-</main>
-</div>
-<script src=https://cdn.jsdelivr.net/npm/node-vibrant@3.1.5/dist/vibrant.min.js integrity="sha256-5NovOZc4iwiAWTYIFiIM7DxKUXKWvpVEuMEPLzcm5/g=" crossorigin=anonymous defer></script><script type=text/javascript src=/ts/main.js defer></script>
-<script>(function(){const a=document.createElement('link');a.href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap",a.type="text/css",a.rel="stylesheet",document.head.appendChild(a)})()</script>
-</body>
-</html>
+<button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button><div class=pswp__preloader><div class=pswp__preloader__icn><div class=pswp__preloader__cut><div class=pswp__preloader__donut></div></div></div></div></div><div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap"><div class=pswp__share-tooltip></div></div><button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)"></button>
+<button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)"></button><div class=pswp__caption><div class=pswp__caption__center></div></div></div></div></div><script src=https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js integrity="sha256-ePwmChbbvXbsO02lbM3HoHbSHTHFAeChekF1xKJdleo=" crossorigin=anonymous defer></script><script src=https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js integrity="sha256-UKkzOn/w1mBxRmLLGrSeyB4e1xbrp4xylgAWb3M42pU=" crossorigin=anonymous defer></script><link rel=stylesheet href=https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.css integrity="sha256-c0uckgykQ9v5k+IqViZOZKc47Jn7KQil4/MP3ySA3F8=" crossorigin=anonymous><link rel=stylesheet href=https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.css integrity="sha256-SBLU4vv6CA6lHsZ1XyTdhyjJxCjPif/TRkjnsyGAGnE=" crossorigin=anonymous></main></div><script src=https://cdn.jsdelivr.net/npm/node-vibrant@3.1.5/dist/vibrant.min.js integrity="sha256-5NovOZc4iwiAWTYIFiIM7DxKUXKWvpVEuMEPLzcm5/g=" crossorigin=anonymous defer></script><script type=text/javascript src=/ts/main.js defer></script>
+<script>(function(){const e=document.createElement("link");e.href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap",e.type="text/css",e.rel="stylesheet",document.head.appendChild(e)})()</script></body></html>

