@@ -3,7 +3,7 @@ title: "Web Gauntlet 2"
 description: "picoCTF writeup by Wakeful Cloud"
 date: 2021-03-30T23:26:46-06:00
 categories: [
-  "picoCTF"
+  "picoCTF 2021"
 ]
 tags: [
   "Web Exploitation",

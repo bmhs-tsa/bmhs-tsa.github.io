@@ -3,11 +3,11 @@ title: "Wireshark Doo Dooo Do Doo"
 description: "picoCTF writeup by loogalicious"
 date: 2021-04-09T15:48:38-06:00
 categories: [
-    "picoCTF"
+  "picoCTF 2021"
 ]
 tags: [
-    "Forensics",
-    "loogalicious"
+  "Forensics",
+  "loogalicious"
 ]
 ---
 

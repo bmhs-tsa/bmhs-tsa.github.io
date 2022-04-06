@@ -3,7 +3,7 @@ title: "X Marks the Spot"
 description: "picoCTF writeup by Wakeful Cloud"
 date: 2021-04-02T23:39:19-06:00
 categories: [
-  "picoCTF"
+  "picoCTF 2021"
 ]
 tags: [
   "Web Exploitation",

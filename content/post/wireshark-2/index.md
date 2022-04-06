@@ -3,7 +3,7 @@ title: "Wireshark 2"
 description: "picoCTF writeup by loogalicious and Wakeful Cloud"
 date: 2021-04-09T15:58:15-06:00
 categories: [
-  "picoCTF"
+  "picoCTF 2021"
 ]
 tags: [
   "Forensics",

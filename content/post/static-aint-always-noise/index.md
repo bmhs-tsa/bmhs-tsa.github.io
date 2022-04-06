@@ -3,11 +3,11 @@ title: "Static Aint Always Noise"
 description: "picoCTF writeup by loogalicious"
 date: 2021-04-02T16:57:30-06:00
 categories: [
-    "picoCTF"
+  "picoCTF 2021"
 ]
 tags: [
-    "Forensics",
-    "loogalicious"
+  "Forensics",
+  "loogalicious"
 ]
 ---
 

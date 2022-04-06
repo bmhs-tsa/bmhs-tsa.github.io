@@ -3,7 +3,7 @@ title: "Get Ahead"
 description: "picoCTF writeup by Wakeful Cloud"
 date: 2021-03-30T22:38:13-06:00
 categories: [
-  "picoCTF"
+  "picoCTF 2021"
 ]
 tags: [
   "Web Exploitation",

@@ -1,7 +1,7 @@
 # Website
 [![GitHub Pages Status](https://img.shields.io/github/workflow/status/bmhs-tsa/bmhs-tsa.github.io/gh-pages?style=for-the-badge)](https://github.com/bmhs-tsa/bmhs-tsa.github.io/actions/workflows/gh-pages.yml)
 
-The source for [bmhstsa.com](https://bmhstsa.com).
+The source for [bmhs-tsa.github.io](https://bmhs-tsa.github.io).
 
 ## Development
 1. Install [Git](https://git-scm.com)
@@ -14,7 +14,7 @@ git clone https://github.com/bmhs-tsa/bmhs-tsa.github.io.git
 git submodule init 
 git submodule update
 ```
-4. Install [Hugo](https://gohugo.io)
+4. Install [Hugo (Extended)](https://gohugo.io/getting-started/installing/)
 
 ### Adding a page
 1. Complete the general development instructions (above)
@@ -27,7 +27,7 @@ title: "{Challenge Name}"
 description: "picoCTF writeup by {Username}"
 date: {Let Hugo generate this for you}
 categories: [
-  "picoCTF"
+  "{Event; eg: picoCTF 2022}"
 ]
 tags: [
   "{Title case CTF type}",

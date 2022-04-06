@@ -3,7 +3,7 @@ title: "Magikarp Ground Mission"
 description: "picoCTF writeup by superamario64"
 date: 2021-04-02T16:46:31-06:00
 categories: [
-  "picoCTF"
+  "picoCTF 2021"
 ]
 tags: [
   "General Skills",

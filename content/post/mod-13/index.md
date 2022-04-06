@@ -3,7 +3,7 @@ title: "Mod 13"
 description: "picoCTF writeup by Whynt"
 date: 2021-04-02T16:58:00-06:00
 categories: [
-  "picoCTF"
+  "picoCTF 2021"
 ]
 tags: [
   "Cryptography",

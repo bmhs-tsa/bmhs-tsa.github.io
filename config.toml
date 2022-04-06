@@ -1,4 +1,4 @@
-baseURL = "https://bmhstsa.com/"
+baseURL = "https://bmhs-tsa.github.io/"
 DefaultContentLanguage = "en"
 languageCode = "en-us"
 paginate = 5

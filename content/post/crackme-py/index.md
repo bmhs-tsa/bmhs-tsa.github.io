@@ -3,7 +3,7 @@ title: "crackme-py"
 description: "picoCTF writeup by superamario64"
 date: 2021-04-09T16:06:11-06:00
 categories: [
-  "picoCTF"
+  "picoCTF 2021"
 ]
 tags: [
   "Reverse Engineering",
